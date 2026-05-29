@@ -1,7 +1,5 @@
 const CONFIG = {
-  // Troque pela sua API da Vercel quando ela estiver pronta.
-  // A API deve aceitar a chave e devolver JSON com { xml: "..." } ou o XML puro.
-  apiUrl: "",
+  apiUrl: "/api/nfe",
 };
 
 const form = document.querySelector("#consulta-form");
@@ -65,17 +63,15 @@ xmlButton.addEventListener("click", () => {
 });
 
 async function fetchNfeXml(accessKey) {
-  if (!CONFIG.apiUrl) {
-    throw new Error("A URL da API ainda nao foi configurada no arquivo app.js.");
-  }
-
   const url = new URL(CONFIG.apiUrl, window.location.origin);
-  url.searchParams.set("chave", accessKey);
 
   const response = await fetch(url.toString(), {
+    method: "POST",
     headers: {
+      "Content-Type": "application/json",
       Accept: "application/json, application/xml, text/xml, text/plain",
     },
+    body: JSON.stringify({ chave: accessKey }),
   });
 
   if (!response.ok) {

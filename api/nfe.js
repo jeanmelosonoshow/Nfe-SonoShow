@@ -1,0 +1,92 @@
+const Firebird = require("node-firebird");
+
+const DEFAULT_SQL = `
+  SELECT X.XMLNFE
+  FROM LFNF L
+  JOIN LFNFXML X ON L.IDFILIAL = X.IDFILIAL AND L.ID = X.ID
+  WHERE L.CHAVENFE = ?
+`;
+const DEFAULT_XML_FIELD = "XMLNFE";
+
+export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") return res.status(200).end();
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Metodo nao permitido" });
+  }
+
+  const chave = String(req.body?.chave || "").replace(/\D/g, "");
+  if (chave.length !== 44) {
+    return res.status(400).json({ erro: "Chave de acesso invalida." });
+  }
+
+  const options = {
+    host: process.env.DB_HOST_FB,
+    port: Number(process.env.DB_PORT_FB || 3050),
+    database: process.env.DB_PATH_FB,
+    user: process.env.DB_USER_FB,
+    password: process.env.DB_PASSWORD_FB,
+    lowercase_keys: false,
+    pageSize: 4096,
+    blobAsText: true,
+  };
+
+  Firebird.attach(options, function attachCallback(err, db) {
+    if (err) {
+      console.error("Erro de Conexao:", err.message);
+      return res.status(500).json({ erro: "Falha ao conectar no servidor remoto." });
+    }
+
+    const sql = process.env.NFE_XML_SQL || DEFAULT_SQL;
+    const xmlField = process.env.NFE_XML_FIELD || DEFAULT_XML_FIELD;
+
+    db.query(sql, [chave], async function queryCallback(queryErr, result) {
+      db.detach();
+
+      if (queryErr) {
+        console.error("Erro na Query:", queryErr.message);
+        return res.status(500).json({ erro: "Erro ao consultar banco de dados." });
+      }
+
+      if (!result || result.length === 0) {
+        return res.status(404).json({ erro: "NF-e nao encontrada." });
+      }
+
+      try {
+        const xml = await normalizeXml(result[0][xmlField]);
+        if (!xml) {
+          return res.status(404).json({ erro: "XML nao encontrado para esta chave." });
+        }
+
+        return res.status(200).json({ xml });
+      } catch (xmlErr) {
+        console.error("Erro ao ler XML:", xmlErr.message);
+        return res.status(500).json({ erro: "Nao foi possivel ler o XML da NF-e." });
+      }
+    });
+  });
+}
+
+function normalizeXml(value) {
+  if (!value) return Promise.resolve("");
+  if (typeof value === "string") return Promise.resolve(value.trim());
+  if (Buffer.isBuffer(value)) return Promise.resolve(value.toString("utf8").trim());
+
+  if (typeof value === "function") {
+    return new Promise((resolve, reject) => {
+      value((err, _name, eventEmitter) => {
+        if (err) return reject(err);
+
+        const chunks = [];
+        eventEmitter.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
+        eventEmitter.on("end", () => resolve(Buffer.concat(chunks).toString("utf8").trim()));
+        eventEmitter.on("error", reject);
+      });
+    });
+  }
+
+  return Promise.resolve(String(value).trim());
+}

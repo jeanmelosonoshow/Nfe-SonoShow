@@ -2,32 +2,66 @@
 
 Pagina publica para consulta de DANFE da Sono Show Moveis.
 
-## Como configurar a API
+## API da Vercel
 
-No arquivo `app.js`, altere o campo `apiUrl`:
+O projeto ja chama a rota local da Vercel:
 
 ```js
 const CONFIG = {
-  apiUrl: "https://sua-api.vercel.app/api/nfe",
+  apiUrl: "/api/nfe",
 };
 ```
 
-A API deve aceitar a chave da NF-e no parametro `chave`:
+A rota `api/nfe.js` recebe:
 
 ```txt
-GET /api/nfe?chave=33260505507218000150550050000097861003827552
+POST /api/nfe
 ```
 
-Ela pode responder de duas formas:
+com o corpo:
+
+```json
+{ "chave": "33260505507218000150550050000097861003827552" }
+```
+
+e responde:
 
 ```json
 { "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><nfeProc..." }
 ```
 
-ou devolver o XML puro com `Content-Type: application/xml`.
+## Variaveis da Vercel
+
+Use as mesmas variaveis de conexao Firebird que voce ja usa:
+
+```txt
+DB_HOST_FB
+DB_PORT_FB
+DB_PATH_FB
+DB_USER_FB
+DB_PASSWORD_FB
+```
+
+Por padrao, a API ja consulta o XML com:
+
+```txt
+SELECT X.XMLNFE
+FROM LFNF L
+JOIN LFNFXML X ON L.IDFILIAL = X.IDFILIAL AND L.ID = X.ID
+WHERE L.CHAVENFE = ?
+```
+
+Se algum dia precisar trocar a consulta sem alterar o codigo, configure:
+
+```txt
+NFE_XML_SQL
+NFE_XML_FIELD
+```
+
+O campo padrao de retorno e `XMLNFE`.
 
 ## Publicacao
 
-Este projeto pode ser publicado como pagina estatica no GitHub Pages ou na Vercel.
+Este projeto deve ser publicado na Vercel para que a rota `api/nfe.js` funcione.
 
-Depois de configurar a URL da API, abra `index.html` no navegador para testar a consulta.
+Depois de configurar as variaveis, publique pela Vercel e teste uma chave real.
