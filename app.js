@@ -151,7 +151,9 @@ function parseNfe(xmlText) {
     };
   });
 
-  const emitAddress = address(first(emit, "enderEmit"));
+  const emitAddressNode = first(emit, "enderEmit");
+  const emitAddress = address(emitAddressNode);
+  const emitAddressParts = addressParts(emitAddressNode);
   const destAddressNode = first(dest, "enderDest");
   const destAddressParts = addressParts(destAddressNode);
   const keyFromId = (infNFe?.getAttribute("Id") || "").replace(/^NFe/, "");
@@ -174,7 +176,9 @@ function parseNfe(xmlText) {
     isNfce: model === "65",
     emitNome: text(emit, "xNome"),
     emitEndereco: emitAddress,
+    emitEnderecoNfce: compactNfceAddress(emitAddressParts),
     emitDoc: docLabel(text(emit, "CNPJ")),
+    emitDocNfce: docLabel(text(emit, "CNPJ")),
     emitCnpj: docValue(emitCnpj),
     emitIe: `IE ${text(emit, "IE") || "-"}`,
     emitIEValue: text(emit, "IE"),
@@ -183,6 +187,7 @@ function parseNfe(xmlText) {
     serie: text(ide, "serie"),
     tpNF: text(ide, "tpNF"),
     chave: formatAccessKey(key),
+    chaveNfce: formatAccessKey(key),
     resumoCanhoto: `${text(ide, "natOp")} - NF-e Nº ${text(ide, "nNF")} - Serie ${text(ide, "serie")}`,
     protocolo: protocolText(infProt),
     natureza: text(ide, "natOp"),
@@ -232,11 +237,12 @@ function parseNfe(xmlText) {
     valorPagoNumber: valorPago.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
     tributos: `Tributos incidentes: ${money(text(total, "vTotTrib"))}`,
     payments,
-    mensagemFiscal: model === "65" ? "NFC-e emitida em ambiente de producao" : "",
+    mensagemFiscal: model === "65" ? "NFC-e emitida em ambiente de produção" : "",
     qrCodeUrl: qrCode,
     consultaUrl: qrCode || "www.nfce.fazenda.gov.br",
     consultaDataHora: new Date().toLocaleString("pt-BR"),
-    destEnderecoNfce: [destAddressParts.street, destAddressParts.complement, destAddressParts.district, destAddressParts.city, destAddressParts.uf].filter(Boolean).join(" , "),
+    destDocNfce: docLabel(destDoc),
+    destEnderecoNfce: compactNfceAddress(destAddressParts),
     transportador: text(transporta, "xNome"),
     modFrete: freightMode(text(transp, "modFrete")),
     placa: text(veicTransp, "placa"),
@@ -425,7 +431,8 @@ function renderNfce(data) {
     const row = document.createElement("div");
     row.className = "nfce-product";
     row.innerHTML = `
-      <strong>${escapeHtml(item.description)} (Código: ${escapeHtml(item.code)} )</strong>
+      <strong>${escapeHtml(item.description)}</strong>
+      <em>(Código: ${escapeHtml(item.code)} )</em>
       <span>Qtde.:${escapeHtml(item.quantity)} UN: ${escapeHtml(item.unit)} Vl. Unit.: ${escapeHtml(decimalFromMoney(item.unitValue))} Vl. Total ${escapeHtml(decimalFromMoney(item.total))}</span>
     `;
     itemsHost.appendChild(row);
@@ -586,6 +593,13 @@ function address(node) {
   const complement = parts.complement;
   const district = parts.district;
   return [street, complement, district, city, cep && `CEP ${cep}`].filter(Boolean).join(" | ");
+}
+
+function compactNfceAddress(parts) {
+  if (!parts) return "-";
+  const city = [parts.city, parts.uf].filter(Boolean).join(" - ");
+  const cep = formatCep(parts.cep);
+  return [parts.street, parts.district, city, cep && `CEP ${cep}`].filter(Boolean).join(" | ");
 }
 
 function addressParts(node) {

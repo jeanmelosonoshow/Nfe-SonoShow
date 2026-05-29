@@ -274,15 +274,13 @@
 
     <template id="nfce-template">
       <article class="nfce-page">
-        <div class="nfce-consulta">Data/Hora da Consulta: <span data-field="consultaDataHora"></span></div>
-
-        <header class="nfce-issuer">
+        <header class="nfce-header">
           <strong data-field="emitNome"></strong>
-          <span data-field="emitDoc"></span>
-          <span data-field="emitEndereco"></span>
+          <span data-field="emitDocNfce"></span>
+          <span data-field="emitEnderecoNfce"></span>
         </header>
 
-        <div class="nfce-title">Documento Auxiliar da Nota Fiscal de Consumidor Eletronica</div>
+        <div class="nfce-title">Documento Auxiliar da Nota Fiscal de Consumidor Eletrônica</div>
 
         <section class="nfce-products">
           <div data-field="items"></div>
@@ -306,8 +304,15 @@
         <section class="nfce-general">
           <h2>Informações gerais da Nota</h2>
           <strong data-field="mensagemFiscal"></strong>
-          <span>Número: <b data-field="numero"></b> Série: <b data-field="serie"></b> Emissão: <b data-field="emissaoCompleta"></b> - Via Consumidor</span>
-          <span>Protocolo de Autorização: <b data-field="protocolo"></b></span>
+          <span>Número:</span>
+          <b data-field="numero"></b>
+          <span>Série:</span>
+          <b data-field="serie"></b>
+          <span>Emissão:</span>
+          <b data-field="emissaoCompleta"></b>
+          <span>- Via Consumidor</span>
+          <span>Protocolo de Autorização:</span>
+          <b data-field="protocolo"></b>
           <span>Ambiente de Produção - Versão XML: 4.00</span>
         </section>
 
@@ -315,12 +320,13 @@
           <h2>Chave de acesso</h2>
           <span>Consulte pela Chave de Acesso em</span>
           <span data-field="consultaUrl"></span>
-          <strong>Chave de acesso: <b data-field="chave"></b></strong>
+          <span>Chave de acesso:</span>
+          <strong data-field="chaveNfce"></strong>
         </section>
 
         <section class="nfce-consumer">
           <h2>Consumidor</h2>
-          <span data-field="destDoc"></span>
+          <span data-field="destDocNfce"></span>
           <strong data-field="destNome"></strong>
           <span data-field="destEnderecoNfce"></span>
         </section>

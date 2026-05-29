@@ -1180,6 +1180,171 @@ td {
   height: 30mm;
 }
 
+.nfce-page {
+  width: 68mm;
+  min-height: auto;
+  margin: 0 auto;
+  padding: 0.5mm 0 0 5mm;
+  color: #000;
+  background: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 6.8pt;
+  line-height: 1.12;
+  box-shadow: none;
+}
+
+.nfce-page strong,
+.nfce-page span,
+.nfce-page b,
+.nfce-page em {
+  display: block;
+}
+
+.nfce-header {
+  min-height: 22mm;
+  padding-top: 1mm;
+  font-size: 6.8pt;
+  line-height: 1.08;
+}
+
+.nfce-header strong {
+  font-size: 6.8pt;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nfce-header span {
+  overflow-wrap: anywhere;
+}
+
+.nfce-title {
+  margin: 2mm 0 1.4mm;
+  font-size: 6pt;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.nfce-products {
+  margin: 0 0 2.2mm;
+}
+
+.nfce-product {
+  display: block;
+  margin: 0;
+  padding: 1.5mm 0 1.4mm;
+  border-bottom: 0.25mm solid #000;
+  font-size: 6.8pt;
+  line-height: 1.12;
+  text-align: center;
+}
+
+.nfce-product strong {
+  font-weight: 700;
+}
+
+.nfce-product em {
+  font-style: normal;
+}
+
+.nfce-product span {
+  margin-top: 0.5mm;
+  text-align: center;
+}
+
+.nfce-totals,
+.nfce-payment,
+.nfce-trib,
+.nfce-consumer,
+.nfce-general,
+.nfce-access,
+.nfce-extra {
+  padding: 0;
+}
+
+.nfce-totals {
+  margin: 2mm 0 2.4mm;
+}
+
+.nfce-totals > div,
+.nfce-payment [data-field="payments"] > div {
+  display: grid;
+  grid-template-columns: 1fr 23mm;
+  gap: 1mm;
+  line-height: 1.1;
+}
+
+.nfce-totals strong,
+.nfce-payment strong {
+  text-align: right;
+}
+
+.nfce-payment {
+  margin-bottom: 4mm;
+}
+
+.nfce-payment h2,
+.nfce-general h2,
+.nfce-access h2,
+.nfce-consumer h2,
+.nfce-extra h2 {
+  margin: 0 0 1mm;
+  font-size: 6.8pt;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.nfce-trib {
+  margin: 4mm 0;
+}
+
+.nfce-general,
+.nfce-access,
+.nfce-consumer,
+.nfce-extra {
+  margin-top: 2.4mm;
+}
+
+.nfce-general b {
+  font-weight: 700;
+}
+
+.nfce-access span,
+.nfce-access strong,
+.nfce-consumer span,
+.nfce-extra span {
+  overflow-wrap: anywhere;
+}
+
+.nfce-access strong {
+  margin-top: 0.8mm;
+  font-size: 9pt;
+  font-weight: 800;
+  line-height: 1.08;
+  word-spacing: 1px;
+}
+
+.nfce-consumer strong {
+  font-weight: 700;
+}
+
+.nfce-qr {
+  display: flex;
+  justify-content: flex-start;
+  margin: 3mm 0 2.2mm;
+}
+
+.qr-placeholder {
+  width: 30mm;
+  height: 30mm;
+  border: 0;
+}
+
+.nfce-extra {
+  font-size: 6.8pt;
+  line-height: 1.12;
+}
+
 @media (max-width: 760px) {
   .topbar,
   .field-row,
@@ -1284,7 +1449,7 @@ td {
   .nfce-page {
     width: 68mm;
     margin: 0 auto;
-    padding: 0.5mm 0 0;
+    padding: 0.5mm 0 0 5mm;
   }
 
   .danfe-cell,
