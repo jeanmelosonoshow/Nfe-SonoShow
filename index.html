@@ -174,7 +174,23 @@
         <h2 class="section-title">Dados dos produtos / servicos</h2>
         <section class="products-section">
           <div class="table-wrap">
-            <table>
+            <table class="products-table">
+              <colgroup>
+                <col class="col-code">
+                <col class="col-desc">
+                <col class="col-ncm">
+                <col class="col-cst">
+                <col class="col-cfop">
+                <col class="col-un">
+                <col class="col-qty">
+                <col class="col-unit">
+                <col class="col-total">
+                <col class="col-bc">
+                <col class="col-icms">
+                <col class="col-ipi">
+                <col class="col-aliq">
+                <col class="col-aliq">
+              </colgroup>
               <thead>
                 <tr>
                   <th>Codigo</th>
@@ -185,7 +201,6 @@
                   <th>Un.</th>
                   <th>Qtd.</th>
                   <th>Valor un.</th>
-                  <th>Desc.</th>
                   <th>Valor total</th>
                   <th>BC ICMS</th>
                   <th>Valor ICMS</th>
@@ -203,6 +218,83 @@
         <section class="additional-grid">
           <div class="danfe-cell"><span>Informacoes complementares</span><p data-field="infCpl"></p></div>
           <div class="danfe-cell"><span>Reservado ao fisco</span><p data-field="infAdFisco"></p></div>
+        </section>
+      </article>
+    </template>
+
+    <template id="nfce-template">
+      <article class="nfce-page">
+        <header class="nfce-issuer">
+          <strong data-field="emitNome"></strong>
+          <span data-field="emitEndereco"></span>
+          <span data-field="emitDoc"></span>
+          <span data-field="emitIe"></span>
+        </header>
+
+        <section class="nfce-title">
+          <strong>DANFE NFC-e</strong>
+          <span>Documento Auxiliar da Nota Fiscal de Consumidor Eletronica</span>
+          <b>Não permite aproveitamento de credito de ICMS</b>
+        </section>
+
+        <section class="nfce-message">
+          <strong data-field="mensagemFiscal"></strong>
+        </section>
+
+        <section class="nfce-products">
+          <div class="nfce-products-head">
+            <span>Codigo</span>
+            <span>Descricao</span>
+          </div>
+          <div class="nfce-products-subhead">
+            <span>Qtde</span>
+            <span>UN</span>
+            <span>Vl.Unit</span>
+            <span>Vl.Total</span>
+          </div>
+          <div data-field="items"></div>
+        </section>
+
+        <section class="nfce-totals">
+          <div><span>Qtde. total de itens</span><strong data-field="itemCount"></strong></div>
+          <div><span>Valor produtos R$</span><strong data-field="vProdNumber"></strong></div>
+          <div><span>Descontos R$</span><strong data-field="vDescNumber"></strong></div>
+          <div><span>Acrescimos R$</span><strong data-field="vOutroNumber"></strong></div>
+          <div class="nfce-grand-total"><span>Valor total R$</span><strong data-field="vNFNumber"></strong></div>
+        </section>
+
+        <section class="nfce-payment">
+          <h2>Forma de pagamento</h2>
+          <div data-field="payments"></div>
+        </section>
+
+        <section class="nfce-trib">
+          <span data-field="tributos"></span>
+        </section>
+
+        <section class="nfce-consumer">
+          <strong data-field="destNome"></strong>
+          <span data-field="destDoc"></span>
+        </section>
+
+        <section class="nfce-qr">
+          <div class="qr-placeholder" aria-hidden="true">QR</div>
+          <div>
+            <strong>NFC-e nº <b data-field="numero"></b> Serie <b data-field="serie"></b></strong>
+            <span data-field="emissaoData"></span>
+            <span>Protocolo de autorizacao</span>
+            <b data-field="protocolo"></b>
+          </div>
+        </section>
+
+        <section class="nfce-access">
+          <strong>Consulte pela chave de acesso em</strong>
+          <span data-field="consultaUrl"></span>
+          <b data-field="chave"></b>
+        </section>
+
+        <section class="nfce-extra">
+          <span data-field="infCpl"></span>
         </section>
       </article>
     </template>

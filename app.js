@@ -9,7 +9,8 @@ const danfeHost = document.querySelector("#danfe");
 const actions = document.querySelector("#actions");
 const printButton = document.querySelector("#print-button");
 const xmlButton = document.querySelector("#xml-button");
-const template = document.querySelector("#danfe-template");
+const danfeTemplate = document.querySelector("#danfe-template");
+const nfceTemplate = document.querySelector("#nfce-template");
 
 let currentXml = "";
 let currentAccessKey = "";
@@ -125,6 +126,7 @@ function parseNfe(xmlText) {
   const veicTransp = first(transp, "veicTransp");
   const volume = first(transp, "vol");
   const infAdic = first(root, "infAdic");
+  const qrCode = text(first(root, "infNFeSupl"), "qrCode");
 
   const items = all(root, "det").map((det) => {
     const prod = first(det, "prod");
@@ -155,13 +157,21 @@ function parseNfe(xmlText) {
   const destAddressParts = addressParts(destAddressNode);
   const keyFromId = (infNFe?.getAttribute("Id") || "").replace(/^NFe/, "");
   const key = text(infProt, "chNFe") || keyFromId;
+  const model = text(ide, "mod") || key.slice(20, 22);
   const dhEmi = text(ide, "dhEmi");
   const dhSaiEnt = text(ide, "dhSaiEnt");
   const emitCnpj = text(emit, "CNPJ");
   const destDoc = text(dest, "CNPJ") || text(dest, "CPF");
   const transpDoc = text(transporta, "CNPJ") || text(transporta, "CPF");
+  const payments = all(root, "detPag").map((payment) => ({
+    method: paymentMethod(text(payment, "tPag")),
+    value: money(text(payment, "vPag")),
+    valueNumber: decimalText(text(payment, "vPag")),
+  }));
 
   return {
+    model,
+    isNfce: model === "65",
     emitNome: text(emit, "xNome"),
     emitEndereco: emitAddress,
     emitDoc: docLabel(text(emit, "CNPJ")),
@@ -189,6 +199,7 @@ function parseNfe(xmlText) {
     emissaoData: dateOnly(dhEmi),
     saidaHora: timeOnly(dhSaiEnt),
     items,
+    itemCount: String(items.length),
     vBC: money(text(total, "vBC")),
     vICMS: money(text(total, "vICMS")),
     vBCST: money(text(total, "vBCST")),
@@ -200,6 +211,15 @@ function parseNfe(xmlText) {
     vOutro: money(text(total, "vOutro")),
     vIPI: money(text(total, "vIPI")),
     vNF: money(text(total, "vNF")),
+    vProdNumber: decimalText(text(total, "vProd")),
+    vDescNumber: decimalText(text(total, "vDesc")),
+    vOutroNumber: decimalText(text(total, "vOutro")),
+    vNFNumber: decimalText(text(total, "vNF")),
+    tributos: `Tributos incidentes: ${money(text(total, "vTotTrib"))}`,
+    payments,
+    mensagemFiscal: model === "65" ? "NFC-e emitida em ambiente de producao" : "",
+    qrCodeUrl: qrCode,
+    consultaUrl: qrCode || "www.nfce.fazenda.gov.br",
     transportador: text(transporta, "xNome"),
     modFrete: freightMode(text(transp, "modFrete")),
     placa: text(veicTransp, "placa"),
@@ -219,7 +239,12 @@ function parseNfe(xmlText) {
 }
 
 function renderDanfe(data) {
-  const fragment = template.content.cloneNode(true);
+  if (data.isNfce) {
+    renderNfce(data);
+    return;
+  }
+
+  const fragment = danfeTemplate.content.cloneNode(true);
 
   fragment.querySelectorAll("[data-field]").forEach((node) => {
     const field = node.dataset.field;
@@ -239,7 +264,6 @@ function renderDanfe(data) {
       <td>${escapeHtml(item.unit)}</td>
       <td class="number">${escapeHtml(item.quantity)}</td>
       <td class="number">${escapeHtml(item.unitValue)}</td>
-      <td class="number">${escapeHtml(item.discount)}</td>
       <td class="number">${escapeHtml(item.total)}</td>
       <td class="number">${escapeHtml(item.vBC)}</td>
       <td class="number">${escapeHtml(item.vICMS)}</td>
@@ -249,6 +273,51 @@ function renderDanfe(data) {
     `;
     body.appendChild(row);
   });
+
+  danfeHost.replaceChildren(fragment);
+  danfeHost.hidden = false;
+}
+
+function renderNfce(data) {
+  const fragment = nfceTemplate.content.cloneNode(true);
+
+  fragment.querySelectorAll("[data-field]").forEach((node) => {
+    const field = node.dataset.field;
+    if (field === "items" || field === "payments") return;
+    node.textContent = data[field] || "-";
+  });
+
+  const itemsHost = fragment.querySelector('[data-field="items"]');
+  data.items.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "nfce-product";
+    row.innerHTML = `
+      <div><span>${escapeHtml(item.code)}</span><strong>${escapeHtml(item.description)}</strong></div>
+      <div>
+        <span>${escapeHtml(item.quantity)}</span>
+        <span>${escapeHtml(item.unit)}</span>
+        <span>${escapeHtml(decimalFromMoney(item.unitValue))}</span>
+        <span>${escapeHtml(decimalFromMoney(item.total))}</span>
+      </div>
+    `;
+    itemsHost.appendChild(row);
+  });
+
+  const paymentsHost = fragment.querySelector('[data-field="payments"]');
+  data.payments.forEach((payment) => {
+    const row = document.createElement("div");
+    row.innerHTML = `<span>${escapeHtml(payment.method)}</span><strong>${escapeHtml(payment.valueNumber)}</strong>`;
+    paymentsHost.appendChild(row);
+  });
+
+  const qrHost = fragment.querySelector(".qr-placeholder");
+  if (data.qrCodeUrl && qrHost) {
+    const qrImage = document.createElement("img");
+    qrImage.alt = "QR Code da NFC-e";
+    qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data.qrCodeUrl)}`;
+    qrHost.replaceChildren(qrImage);
+    qrHost.classList.add("has-qr");
+  }
 
   danfeHost.replaceChildren(fragment);
   danfeHost.hidden = false;
@@ -308,6 +377,15 @@ function percent(value) {
 function numberText(value) {
   const number = Number(String(value || "0").replace(",", "."));
   return number.toLocaleString("pt-BR", { maximumFractionDigits: 4 });
+}
+
+function decimalText(value) {
+  const number = Number(String(value || "0").replace(",", "."));
+  return number.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function decimalFromMoney(value) {
+  return String(value || "").replace(/^R\$\s?/, "");
 }
 
 function dateTime(value) {
@@ -384,6 +462,28 @@ function freightMode(value) {
     9: "9 - Sem frete",
   };
   return modes[value] || value || "-";
+}
+
+function paymentMethod(value) {
+  const methods = {
+    "01": "Dinheiro",
+    "02": "Cheque",
+    "03": "Cartao de credito",
+    "04": "Cartao de debito",
+    "05": "Credito loja",
+    "10": "Vale alimentacao",
+    "11": "Vale refeicao",
+    "12": "Vale presente",
+    "13": "Vale combustivel",
+    "15": "Boleto bancario",
+    "16": "Deposito bancario",
+    "17": "PIX",
+    "18": "Transferencia bancaria",
+    "19": "Programa de fidelidade",
+    "90": "Sem pagamento",
+    "99": "Outros",
+  };
+  return methods[value] || value || "-";
 }
 
 function weight(value) {
