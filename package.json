@@ -6,6 +6,6 @@
     "dev": "vercel dev"
   },
   "dependencies": {
-    "node-firebird": "^1.1.9"
+    "node-firebird": "^1.1.6"
   }
 }

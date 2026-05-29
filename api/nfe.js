@@ -34,21 +34,21 @@ export default async function handler(req, res) {
 
   const options = {
     host: process.env.DB_HOST_FB,
-    port: Number(process.env.DB_PORT_FB),
+    port: process.env.DB_PORT_FB,
     database: process.env.DB_PATH_FB,
     user: process.env.DB_USER_FB,
     password: process.env.DB_PASSWORD_FB,
     lowercase_keys: false,
     pageSize: 4096,
-    blobAsText: true,
   };
 
   let database = null;
   let finished = false;
+  let stage = "conectar ao banco";
 
   const timer = setTimeout(() => {
     finish(504, {
-      erro: "A consulta demorou demais. Verifique conexao com o banco, VPN/firewall ou tempo de resposta do Firebird.",
+      erro: `A consulta demorou demais ao tentar ${stage}. Verifique conexao com o banco, VPN/firewall ou tempo de resposta do Firebird.`,
     });
   }, QUERY_TIMEOUT_MS);
 
@@ -83,6 +83,7 @@ export default async function handler(req, res) {
     }
 
     database = db;
+    stage = "consultar a NF-e";
     const sql = process.env.NFE_XML_SQL || DEFAULT_SQL;
     const xmlField = process.env.NFE_XML_FIELD || DEFAULT_XML_FIELD;
 
@@ -97,6 +98,7 @@ export default async function handler(req, res) {
       }
 
       try {
+        stage = "ler o XML da NF-e";
         const xml = await normalizeXml(result[0][xmlField]);
         if (!xml) {
           return finish(404, { erro: "XML nao encontrado para esta chave." });
