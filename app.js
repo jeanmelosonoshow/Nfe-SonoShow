@@ -29,6 +29,9 @@ form.addEventListener("submit", async (event) => {
   }
 
   currentAccessKey = accessKey;
+  currentXml = "";
+  actions.hidden = true;
+  danfeHost.hidden = true;
   showStatus("Consultando a nota fiscal...");
 
   try {
@@ -64,15 +67,28 @@ xmlButton.addEventListener("click", () => {
 
 async function fetchNfeXml(accessKey) {
   const url = new URL(CONFIG.apiUrl, window.location.origin);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 35000);
 
-  const response = await fetch(url.toString(), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json, application/xml, text/xml, text/plain",
-    },
-    body: JSON.stringify({ chave: accessKey }),
-  });
+  let response;
+  try {
+    response = await fetch(url.toString(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json, application/xml, text/xml, text/plain",
+      },
+      body: JSON.stringify({ chave: accessKey }),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error.name === "AbortError") {
+      throw new Error("A consulta demorou demais. Tente novamente em alguns instantes.");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     const errorMessage = await readErrorMessage(response);

@@ -7,6 +7,7 @@ const DEFAULT_SQL = `
   WHERE L.CHAVENFE = ?
 `;
 const DEFAULT_XML_FIELD = "XMLNFE";
+const QUERY_TIMEOUT_MS = 25000;
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -42,6 +43,31 @@ export default async function handler(req, res) {
     blobAsText: true,
   };
 
+  let database = null;
+  let finished = false;
+
+  const timer = setTimeout(() => {
+    finish(504, {
+      erro: "A consulta demorou demais. Verifique conexao com o banco, VPN/firewall ou tempo de resposta do Firebird.",
+    });
+  }, QUERY_TIMEOUT_MS);
+
+  function finish(status, payload) {
+    if (finished) return;
+    finished = true;
+    clearTimeout(timer);
+
+    if (database) {
+      try {
+        database.detach();
+      } catch (detachErr) {
+        console.error("Erro ao fechar conexao Firebird:", detachErr.message);
+      }
+    }
+
+    return res.status(status).json(payload);
+  }
+
   Firebird.attach(options, function attachCallback(err, db) {
     if (err) {
       console.error("Erro de Conexao Firebird:", {
@@ -51,36 +77,35 @@ export default async function handler(req, res) {
         portConfigured: Boolean(process.env.DB_PORT_FB),
         databaseConfigured: Boolean(process.env.DB_PATH_FB),
       });
-      return res.status(500).json({
+      return finish(500, {
         erro: "Falha ao conectar no servidor remoto. Verifique as variaveis da Vercel, rede/firewall e logs da funcao.",
       });
     }
 
+    database = db;
     const sql = process.env.NFE_XML_SQL || DEFAULT_SQL;
     const xmlField = process.env.NFE_XML_FIELD || DEFAULT_XML_FIELD;
 
     db.query(sql, [chave], async function queryCallback(queryErr, result) {
-      db.detach();
-
       if (queryErr) {
         console.error("Erro na Query:", queryErr.message);
-        return res.status(500).json({ erro: "Erro ao consultar banco de dados." });
+        return finish(500, { erro: "Erro ao consultar banco de dados." });
       }
 
       if (!result || result.length === 0) {
-        return res.status(404).json({ erro: "NF-e nao encontrada." });
+        return finish(404, { erro: "NF-e nao encontrada." });
       }
 
       try {
         const xml = await normalizeXml(result[0][xmlField]);
         if (!xml) {
-          return res.status(404).json({ erro: "XML nao encontrado para esta chave." });
+          return finish(404, { erro: "XML nao encontrado para esta chave." });
         }
 
-        return res.status(200).json({ xml });
+        return finish(200, { xml });
       } catch (xmlErr) {
         console.error("Erro ao ler XML:", xmlErr.message);
-        return res.status(500).json({ erro: "Nao foi possivel ler o XML da NF-e." });
+        return finish(500, { erro: "Nao foi possivel ler o XML da NF-e." });
       }
     });
   });
