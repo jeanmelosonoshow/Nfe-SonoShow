@@ -606,7 +606,6 @@ td.number {
 .products-table .col-un { width: 26px; }
 .products-table .col-qty { width: 52px; }
 .products-table .col-unit { width: 54px; }
-.products-table .col-discount { width: 45px; }
 .products-table .col-total { width: 54px; }
 .products-table .col-bc { width: 54px; }
 .products-table .col-icms { width: 54px; }
@@ -628,12 +627,12 @@ td.number {
 
 .receipt-stub {
   display: grid;
-  grid-template-columns: 38mm 1fr 27mm;
+  grid-template-columns: 34mm 132mm 31mm;
   grid-template-areas:
     "text text nfe"
     "date signature nfe";
   min-height: 18mm;
-  font-size: 6.5pt;
+  font-size: 7.4pt;
 }
 
 .stub-text { grid-area: text; }
@@ -648,11 +647,12 @@ td.number {
 .additional-grid > div,
 th,
 td {
-  border: 0.5pt solid #000;
+  border: 0.22mm solid #000;
 }
 
 .receipt-stub p {
-  margin: 1.4mm 1.2mm;
+  margin: 1mm;
+  text-transform: uppercase;
 }
 
 .receipt-stub > div:not(:first-child) {
@@ -660,7 +660,11 @@ td {
 }
 
 .stub-nfe {
-  font-size: 10pt;
+  font-size: 9pt;
+}
+
+.stub-nfe strong {
+  font-size: 16pt;
 }
 
 .cut-line {
@@ -669,62 +673,81 @@ td {
 }
 
 .danfe-header {
-  grid-template-columns: 82mm 30mm 1fr;
+  grid-template-columns: 81.8mm 34mm 81.2mm;
+  min-height: 40.6mm;
+  border: 0.22mm solid #000;
+  border-radius: 1mm;
+  overflow: hidden;
 }
 
 .danfe-cell {
-  min-height: 7mm;
-  padding: 0.8mm 1mm;
+  min-height: 5mm;
+  padding: 0.35mm 0.7mm;
+  overflow: hidden;
 }
 
 .danfe-cell span,
 .access-key span,
 .section-title {
   font-family: "Times New Roman", Times, serif;
-  font-size: 5.3pt;
+  font-size: 5.7pt;
 }
 
 .danfe-cell strong {
   min-height: 4mm;
   margin-top: 1mm;
-  font-size: 8.3pt;
-  font-weight: 400;
+  font-size: 9pt;
+  font-weight: 700;
   line-height: 1.05;
 }
 
 .issuer {
-  min-height: 32mm;
+  min-height: 40.6mm;
+  padding-top: 1mm;
 }
 
 .issuer strong {
-  font-size: 12pt;
+  font-size: 13.4pt;
+  line-height: 1;
 }
 
 .issuer span {
-  font-size: 8pt;
+  font-size: 8.2pt;
+}
+
+.issuer > span:first-child {
+  margin-bottom: 8.6mm;
+  font-size: 7pt;
+  font-style: italic;
+  text-transform: uppercase;
 }
 
 .danfe-title {
-  gap: 1mm;
-  min-height: 32mm;
+  position: relative;
+  gap: 0.8mm;
+  min-height: 40.6mm;
+  padding-top: 2.1mm;
 }
 
 .danfe-title > strong {
-  font-size: 16pt;
+  font-size: 19pt;
+  line-height: 0.88;
 }
 
 .danfe-title > span {
   font-size: 8pt;
+  line-height: 1.02;
 }
 
 .danfe-title small {
-  font-size: 9pt;
+  font-size: 10.2pt;
 }
 
 .operation-type {
-  grid-template-columns: 1fr 8mm;
+  grid-template-columns: 1fr 6.8mm;
   font-size: 7.5pt;
   text-align: left;
+  margin: 1.8mm 2mm 0 3mm;
 }
 
 .operation-type span {
@@ -736,21 +759,25 @@ td {
   grid-column: 2;
   grid-row: 1 / span 2;
   display: grid;
-  min-height: 6mm;
+  width: 6.8mm;
+  height: 9mm;
+  min-height: 9mm;
   place-items: center;
   padding: 0;
-  border: 0.5pt solid #000;
-  font-size: 10pt;
+  border: 0.25mm solid #000;
+  border-radius: 1mm;
+  font-size: 13pt;
 }
 
 .access-panel {
-  grid-template-rows: 13mm 8mm 11mm;
+  grid-template-rows: 20.3mm 7.9mm 12.4mm;
+  border: 0;
 }
 
 .barcode {
-  width: 73mm;
-  height: 10mm;
-  margin: 1.5mm auto 0;
+  width: 72.5mm;
+  height: 14.9mm;
+  margin: 1.9mm auto 0;
 }
 
 .access-key {
@@ -766,11 +793,12 @@ td {
 
 .auth-text {
   padding: 1mm 2mm;
-  font-size: 7pt;
+  font-size: 7.5pt;
+  line-height: 1.28;
 }
 
 .two-cols {
-  grid-template-columns: 112mm 1fr;
+  grid-template-columns: 112mm 85mm;
 }
 
 .three-cols {
@@ -778,20 +806,43 @@ td {
 }
 
 .section-title {
-  margin: 1.2mm 0 0;
+  margin: 1.4mm 0 0;
+  font-size: 7.2pt;
   font-weight: 700;
 }
 
 .destinatario-grid {
-  grid-template-columns: 124mm 43mm 30mm;
+  grid-template-columns: repeat(197, 1mm);
 }
 
+.destinatario-grid .danfe-cell {
+  min-height: 8.2mm;
+}
+
+.destinatario-grid .danfe-cell:nth-child(1) { grid-column: span 122; }
+.destinatario-grid .danfe-cell:nth-child(2) { grid-column: span 41; }
+.destinatario-grid .danfe-cell:nth-child(3) { grid-column: span 34; }
+.destinatario-grid .danfe-cell:nth-child(4) { grid-column: span 94; }
+.destinatario-grid .danfe-cell:nth-child(5) { grid-column: span 38; }
+.destinatario-grid .danfe-cell:nth-child(6) { grid-column: span 30; }
+.destinatario-grid .danfe-cell:nth-child(7) { grid-column: span 35; }
+.destinatario-grid .danfe-cell:nth-child(8) { grid-column: span 94; }
+.destinatario-grid .danfe-cell:nth-child(9) { grid-column: span 10; }
+.destinatario-grid .danfe-cell:nth-child(10) { grid-column: span 45; }
+.destinatario-grid .danfe-cell:nth-child(11) { grid-column: span 48; }
+
 .tax-grid {
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 22mm 22mm 27mm 25mm 27mm 24mm 24mm 26mm;
 }
 
 .tax-grid .danfe-cell {
-  min-height: 8.8mm;
+  min-height: 8.6mm;
+  padding: 0.25mm 0.55mm;
+}
+
+.tax-grid .danfe-cell strong {
+  font-size: 8.5pt;
+  text-align: right;
 }
 
 .billing-grid {
@@ -811,11 +862,35 @@ td {
 }
 
 .transport-grid {
-  grid-template-columns: 70mm 30mm 31mm 13mm 1fr;
+  grid-template-columns: repeat(197, 1mm);
 }
 
+.transport-grid .danfe-cell {
+  min-height: 8.2mm;
+}
+
+.transport-grid .danfe-cell:nth-child(1) { grid-column: span 87; }
+.transport-grid .danfe-cell:nth-child(2) { grid-column: span 24; }
+.transport-grid .danfe-cell:nth-child(3) { grid-column: span 30; }
+.transport-grid .danfe-cell:nth-child(4) { grid-column: span 29; }
+.transport-grid .danfe-cell:nth-child(5) { grid-column: span 8; }
+.transport-grid .danfe-cell:nth-child(6) { grid-column: span 19; }
+.transport-grid .danfe-cell:nth-child(7) { grid-column: span 87; }
+.transport-grid .danfe-cell:nth-child(8) { grid-column: span 65; }
+.transport-grid .danfe-cell:nth-child(9) { grid-column: span 8; }
+.transport-grid .danfe-cell:nth-child(10) { grid-column: span 37; }
+.transport-grid .danfe-cell:nth-child(11) { grid-column: span 20; }
+.transport-grid .danfe-cell:nth-child(12) { grid-column: span 45; }
+.transport-grid .danfe-cell:nth-child(13) { grid-column: span 40; }
+.transport-grid .danfe-cell:nth-child(14) { grid-column: span 45; }
+.transport-grid .danfe-cell:nth-child(15) { grid-column: span 24; }
+.transport-grid .danfe-cell:nth-child(16) { grid-column: span 23; }
+
 .products-section {
-  border: 0;
+  min-height: 114mm;
+  border-left: 0.22mm solid #000;
+  border-right: 0.22mm solid #000;
+  border-bottom: 0.22mm solid #000;
 }
 
 .table-wrap {
@@ -827,8 +902,8 @@ table {
 }
 
 th {
-  height: 6mm;
-  padding: 0.6mm;
+  height: 8.1mm;
+  padding: 0.35mm 0.45mm;
   font-family: "Times New Roman", Times, serif;
   font-size: 5.3pt;
   text-align: center;
@@ -836,24 +911,23 @@ th {
 }
 
 td {
-  min-height: 3mm;
-  padding: 0.55mm 0.8mm;
+  height: 10mm;
+  padding: 0.35mm 0.45mm;
 }
 
-.products-table .col-code { width: 16mm; }
-.products-table .col-desc { width: 59mm; }
-.products-table .col-ncm { width: 10mm; }
-.products-table .col-cst { width: 7mm; }
-.products-table .col-cfop { width: 6.5mm; }
+.products-table .col-code { width: 18.5mm; }
+.products-table .col-desc { width: 55mm; }
+.products-table .col-ncm { width: 13mm; }
+.products-table .col-cst { width: 9mm; }
+.products-table .col-cfop { width: 8.5mm; }
 .products-table .col-un { width: 6mm; }
-.products-table .col-qty { width: 11.5mm; }
-.products-table .col-unit { width: 14mm; }
-.products-table .col-discount { width: 12mm; }
-.products-table .col-total { width: 11mm; }
-.products-table .col-bc { width: 11mm; }
-.products-table .col-icms { width: 11mm; }
-.products-table .col-ipi { width: 11mm; }
-.products-table .col-aliq { width: 5.5mm; }
+.products-table .col-qty { width: 13.5mm; }
+.products-table .col-unit { width: 13mm; }
+.products-table .col-total { width: 12mm; }
+.products-table .col-bc { width: 12mm; }
+.products-table .col-icms { width: 12mm; }
+.products-table .col-ipi { width: 8.5mm; }
+.products-table .col-aliq { width: 8mm; }
 
 .additional-grid {
   grid-template-columns: 2fr 1fr;

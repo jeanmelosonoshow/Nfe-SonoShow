@@ -206,7 +206,9 @@ function parseNfe(xmlText) {
     destIE: text(dest, "IE"),
     emissaoData: dateOnly(dhEmi),
     emissaoCompleta: dateTime(dhEmi),
+    saidaData: dateOnly(dhSaiEnt || dhEmi),
     saidaHora: timeOnly(dhSaiEnt),
+    destIeSaida: [text(dest, "IE"), timeOnly(dhSaiEnt)].filter((value) => value && value !== "-").join("     "),
     items,
     billing: {
       invoice: text(fat, "nFat"),
@@ -254,6 +256,8 @@ function parseNfe(xmlText) {
     transpIE: text(transporta, "IE"),
     qVol: numberText(text(volume, "qVol")),
     espVol: text(volume, "esp"),
+    marcaVol: text(volume, "marca"),
+    nVol: text(volume, "nVol"),
     pesoL: weight(text(volume, "pesoL")),
     pesoB: weight(text(volume, "pesoB")),
     infCpl: text(infAdic, "infCpl") || "Sem informacoes adicionais.",
@@ -291,7 +295,6 @@ function renderDanfe(data) {
       <td>${escapeHtml(item.unit)}</td>
       <td class="number">${escapeHtml(item.quantity)}</td>
       <td class="number">${escapeHtml(item.unitValue)}</td>
-      <td class="number">${escapeHtml(item.discount)}</td>
       <td class="number">${escapeHtml(item.total)}</td>
       <td class="number">${escapeHtml(item.vBC)}</td>
       <td class="number">${escapeHtml(item.vICMS)}</td>

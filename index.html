@@ -78,6 +78,7 @@
 
         <section class="danfe-header">
           <div class="issuer danfe-cell">
+            <span>Identificacao do emitente</span>
             <strong data-field="emitNome"></strong>
             <span data-field="emitEndereco"></span>
             <span data-field="emitDoc"></span>
@@ -132,11 +133,11 @@
           <div class="danfe-cell wide"><span>Endereco</span><strong data-field="destLogradouro"></strong></div>
           <div class="danfe-cell"><span>Bairro / distrito</span><strong data-field="destBairro"></strong></div>
           <div class="danfe-cell"><span>CEP</span><strong data-field="destCep"></strong></div>
+          <div class="danfe-cell"><span>Data da saida / entrada</span><strong data-field="saidaData"></strong></div>
           <div class="danfe-cell"><span>Municipio</span><strong data-field="destMunicipio"></strong></div>
           <div class="danfe-cell"><span>UF</span><strong data-field="destUF"></strong></div>
           <div class="danfe-cell"><span>Fone / fax</span><strong data-field="destFone"></strong></div>
-          <div class="danfe-cell"><span>Inscricao estadual</span><strong data-field="destIE"></strong></div>
-          <div class="danfe-cell"><span>Hora da saida</span><strong data-field="saidaHora"></strong></div>
+          <div class="danfe-cell"><span>Inscricao estadual / Hora da saida</span><strong data-field="destIeSaida"></strong></div>
         </section>
 
         <h2 class="section-title">Calculo do imposto</h2>
@@ -147,7 +148,6 @@
           <div class="danfe-cell"><span>Valor ICMS ST</span><strong data-field="vST"></strong></div>
           <div class="danfe-cell"><span>V. imp. importacao</span><strong data-field="vII"></strong></div>
           <div class="danfe-cell"><span>V. ICMS UF remet.</span><strong>0,00</strong></div>
-          <div class="danfe-cell"><span>V. FCP UF dest.</span><strong>0,00</strong></div>
           <div class="danfe-cell"><span>Valor do PIS</span><strong data-field="vPIS"></strong></div>
           <div class="danfe-cell"><span>V. total produtos</span><strong data-field="vProd"></strong></div>
           <div class="danfe-cell"><span>Valor frete</span><strong data-field="vFrete"></strong></div>
@@ -155,7 +155,6 @@
           <div class="danfe-cell"><span>Desconto</span><strong data-field="vDesc"></strong></div>
           <div class="danfe-cell"><span>Outras despesas</span><strong data-field="vOutro"></strong></div>
           <div class="danfe-cell"><span>Valor IPI</span><strong data-field="vIPI"></strong></div>
-          <div class="danfe-cell"><span>V. ICMS UF dest.</span><strong>0,00</strong></div>
           <div class="danfe-cell"><span>V. tot. trib.</span><strong data-field="vTotTrib"></strong></div>
           <div class="danfe-cell"><span>Valor da COFINS</span><strong data-field="vCOFINS"></strong></div>
           <div class="danfe-cell"><span>V. total da nota</span><strong data-field="vNF"></strong></div>
@@ -166,17 +165,20 @@
 
         <h2 class="section-title">Transportador / Volumes transportados</h2>
         <section class="transport-grid">
-          <div class="danfe-cell wide"><span>Razao social</span><strong data-field="transportador"></strong></div>
-          <div class="danfe-cell"><span>Frete por conta</span><strong data-field="modFrete"></strong></div>
+          <div class="danfe-cell transport-name"><span>Nome / razao social</span><strong data-field="transportador"></strong></div>
+          <div class="danfe-cell"><span>Frete</span><strong data-field="modFrete"></strong></div>
+          <div class="danfe-cell"><span>Codigo ANTT</span><strong></strong></div>
           <div class="danfe-cell"><span>Placa do veiculo</span><strong data-field="placa"></strong></div>
           <div class="danfe-cell"><span>UF</span><strong data-field="veicUF"></strong></div>
           <div class="danfe-cell"><span>CNPJ / CPF</span><strong data-field="transpDoc"></strong></div>
-          <div class="danfe-cell wide"><span>Endereco</span><strong data-field="transpEndereco"></strong></div>
-          <div class="danfe-cell"><span>Municipio</span><strong data-field="transpMunicipio"></strong></div>
+          <div class="danfe-cell transport-address"><span>Endereco</span><strong data-field="transpEndereco"></strong></div>
+          <div class="danfe-cell transport-city"><span>Municipio</span><strong data-field="transpMunicipio"></strong></div>
           <div class="danfe-cell"><span>UF</span><strong data-field="transpUF"></strong></div>
           <div class="danfe-cell"><span>Inscricao estadual</span><strong data-field="transpIE"></strong></div>
           <div class="danfe-cell"><span>Quantidade</span><strong data-field="qVol"></strong></div>
           <div class="danfe-cell"><span>Especie</span><strong data-field="espVol"></strong></div>
+          <div class="danfe-cell"><span>Marca</span><strong data-field="marcaVol"></strong></div>
+          <div class="danfe-cell"><span>Numeracao</span><strong data-field="nVol"></strong></div>
           <div class="danfe-cell"><span>Peso liquido</span><strong data-field="pesoL"></strong></div>
           <div class="danfe-cell"><span>Peso bruto</span><strong data-field="pesoB"></strong></div>
         </section>
@@ -194,7 +196,6 @@
                 <col class="col-un">
                 <col class="col-qty">
                 <col class="col-unit">
-                <col class="col-discount">
                 <col class="col-total">
                 <col class="col-bc">
                 <col class="col-icms">
@@ -212,7 +213,6 @@
                   <th>Un.</th>
                   <th>Qtd.</th>
                   <th>Valor un.</th>
-                  <th>Desconto</th>
                   <th>Valor total</th>
                   <th>BC ICMS</th>
                   <th>Valor ICMS</th>
