@@ -1236,7 +1236,7 @@ td {
   border-bottom: 0.25mm solid #000;
   font-size: 6.8pt;
   line-height: 1.12;
-  text-align: center;
+  text-align: left;
 }
 
 .nfce-product strong {
@@ -1249,7 +1249,7 @@ td {
 
 .nfce-product span {
   margin-top: 0.5mm;
-  text-align: center;
+  text-align: left;
 }
 
 .nfce-totals,

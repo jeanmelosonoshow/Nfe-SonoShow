@@ -239,7 +239,7 @@ function parseNfe(xmlText) {
     payments,
     mensagemFiscal: model === "65" ? "NFC-e emitida em ambiente de produção" : "",
     qrCodeUrl: qrCode,
-    consultaUrl: qrCode || "www.nfce.fazenda.gov.br",
+    consultaUrl: model === "65" ? "www.fazenda.rj.gov.br/nfce/consulta" : qrCode || "www.nfce.fazenda.gov.br",
     consultaDataHora: new Date().toLocaleString("pt-BR"),
     destDocNfce: docLabel(destDoc),
     destEnderecoNfce: compactNfceAddress(destAddressParts),
