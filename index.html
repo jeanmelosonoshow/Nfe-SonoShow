@@ -145,13 +145,20 @@
           <div class="danfe-cell"><span>Valor ICMS</span><strong data-field="vICMS"></strong></div>
           <div class="danfe-cell"><span>Base calculo ICMS ST</span><strong data-field="vBCST"></strong></div>
           <div class="danfe-cell"><span>Valor ICMS ST</span><strong data-field="vST"></strong></div>
-          <div class="danfe-cell"><span>Valor total dos produtos</span><strong data-field="vProd"></strong></div>
+          <div class="danfe-cell"><span>V. imp. importacao</span><strong data-field="vII"></strong></div>
+          <div class="danfe-cell"><span>V. ICMS UF remet.</span><strong>0,00</strong></div>
+          <div class="danfe-cell"><span>V. FCP UF dest.</span><strong>0,00</strong></div>
+          <div class="danfe-cell"><span>Valor do PIS</span><strong data-field="vPIS"></strong></div>
+          <div class="danfe-cell"><span>V. total produtos</span><strong data-field="vProd"></strong></div>
           <div class="danfe-cell"><span>Valor frete</span><strong data-field="vFrete"></strong></div>
           <div class="danfe-cell"><span>Valor seguro</span><strong data-field="vSeg"></strong></div>
           <div class="danfe-cell"><span>Desconto</span><strong data-field="vDesc"></strong></div>
           <div class="danfe-cell"><span>Outras despesas</span><strong data-field="vOutro"></strong></div>
           <div class="danfe-cell"><span>Valor IPI</span><strong data-field="vIPI"></strong></div>
-          <div class="danfe-cell"><span>Valor total da nota</span><strong data-field="vNF"></strong></div>
+          <div class="danfe-cell"><span>V. ICMS UF dest.</span><strong>0,00</strong></div>
+          <div class="danfe-cell"><span>V. tot. trib.</span><strong data-field="vTotTrib"></strong></div>
+          <div class="danfe-cell"><span>Valor da COFINS</span><strong data-field="vCOFINS"></strong></div>
+          <div class="danfe-cell"><span>V. total da nota</span><strong data-field="vNF"></strong></div>
         </section>
 
         <h2 class="section-title">Transportador / Volumes transportados</h2>
@@ -224,47 +231,26 @@
 
     <template id="nfce-template">
       <article class="nfce-page">
+        <div class="nfce-consulta">Data/Hora da Consulta: <span data-field="consultaDataHora"></span></div>
+
         <header class="nfce-issuer">
           <strong data-field="emitNome"></strong>
-          <span data-field="emitEndereco"></span>
           <span data-field="emitDoc"></span>
-          <span data-field="emitIe"></span>
+          <span data-field="emitEndereco"></span>
         </header>
 
-        <section class="nfce-title">
-          <strong>DANFE NFC-e</strong>
-          <span>Documento Auxiliar da Nota Fiscal de Consumidor Eletronica</span>
-          <b>Não permite aproveitamento de credito de ICMS</b>
-        </section>
-
-        <section class="nfce-message">
-          <strong data-field="mensagemFiscal"></strong>
-        </section>
-
         <section class="nfce-products">
-          <div class="nfce-products-head">
-            <span>Codigo</span>
-            <span>Descricao</span>
-          </div>
-          <div class="nfce-products-subhead">
-            <span>Qtde</span>
-            <span>UN</span>
-            <span>Vl.Unit</span>
-            <span>Vl.Total</span>
-          </div>
           <div data-field="items"></div>
         </section>
 
         <section class="nfce-totals">
-          <div><span>Qtde. total de itens</span><strong data-field="itemCount"></strong></div>
-          <div><span>Valor produtos R$</span><strong data-field="vProdNumber"></strong></div>
-          <div><span>Descontos R$</span><strong data-field="vDescNumber"></strong></div>
-          <div><span>Acrescimos R$</span><strong data-field="vOutroNumber"></strong></div>
-          <div class="nfce-grand-total"><span>Valor total R$</span><strong data-field="vNFNumber"></strong></div>
+          <div><span>Qtd. total de itens:</span><strong data-field="itemCount"></strong></div>
+          <div><span>Valor a pagar R$:</span><strong data-field="vNFNumber"></strong></div>
+          <div><span>Valor pago R$:</span><strong data-field="valorPagoNumber"></strong></div>
         </section>
 
         <section class="nfce-payment">
-          <h2>Forma de pagamento</h2>
+          <h2>Forma de pagamento:</h2>
           <div data-field="payments"></div>
         </section>
 
@@ -272,28 +258,34 @@
           <span data-field="tributos"></span>
         </section>
 
+        <section class="nfce-general">
+          <h2>Informações gerais da Nota</h2>
+          <strong data-field="mensagemFiscal"></strong>
+          <span>Número: <b data-field="numero"></b> Série: <b data-field="serie"></b> Emissão: <b data-field="emissaoCompleta"></b> - Via Consumidor</span>
+          <span>Protocolo de Autorização: <b data-field="protocolo"></b></span>
+          <span>Ambiente de Produção - Versão XML: 4.00</span>
+        </section>
+
+        <section class="nfce-access">
+          <h2>Chave de acesso</h2>
+          <span>Consulte pela Chave de Acesso em</span>
+          <span data-field="consultaUrl"></span>
+          <strong>Chave de acesso: <b data-field="chave"></b></strong>
+        </section>
+
         <section class="nfce-consumer">
-          <strong data-field="destNome"></strong>
+          <h2>Consumidor</h2>
           <span data-field="destDoc"></span>
+          <strong data-field="destNome"></strong>
+          <span data-field="destEnderecoNfce"></span>
         </section>
 
         <section class="nfce-qr">
           <div class="qr-placeholder" aria-hidden="true">QR</div>
-          <div>
-            <strong>NFC-e nº <b data-field="numero"></b> Serie <b data-field="serie"></b></strong>
-            <span data-field="emissaoData"></span>
-            <span>Protocolo de autorizacao</span>
-            <b data-field="protocolo"></b>
-          </div>
-        </section>
-
-        <section class="nfce-access">
-          <strong>Consulte pela chave de acesso em</strong>
-          <span data-field="consultaUrl"></span>
-          <b data-field="chave"></b>
         </section>
 
         <section class="nfce-extra">
+          <h2>Informações de interesse do contribuinte</h2>
           <span data-field="infCpl"></span>
         </section>
       </article>

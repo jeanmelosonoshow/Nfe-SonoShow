@@ -210,9 +210,9 @@ button.secondary:hover {
 
 .receipt-stub {
   display: grid;
-  grid-template-columns: 1fr 132px 370px 146px;
+  grid-template-columns: 1fr 132px 350px 146px;
   min-height: 70px;
-  font-size: 9px;
+  font-size: 8.5px;
   line-height: 1.1;
 }
 
@@ -276,7 +276,7 @@ button.secondary:hover {
   display: block;
   min-height: 14px;
   margin-top: 2px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   line-height: 1.05;
 }
@@ -289,13 +289,13 @@ button.secondary:hover {
 }
 
 .issuer strong {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
 }
 
 .issuer span {
   display: block;
-  font-size: 11px;
+  font-size: 10.5px;
   line-height: 1.12;
 }
 
@@ -307,7 +307,7 @@ button.secondary:hover {
 }
 
 .danfe-title > strong {
-  font-size: 22px;
+  font-size: 21px;
   line-height: 1;
 }
 
@@ -358,7 +358,7 @@ button.secondary:hover {
 .access-key strong {
   display: block;
   margin-top: 3px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   line-height: 1;
   word-spacing: 1px;
@@ -368,7 +368,7 @@ button.secondary:hover {
   display: grid;
   place-items: center;
   padding: 2px 8px;
-  font-size: 10px;
+  font-size: 9px;
   line-height: 1.05;
   text-align: center;
 }
@@ -404,11 +404,7 @@ button.secondary:hover {
 }
 
 .tax-grid {
-  grid-template-columns: repeat(6, 1fr);
-}
-
-.tax-grid .danfe-cell:last-child {
-  grid-column: span 1;
+  grid-template-columns: repeat(9, 1fr);
 }
 
 .transport-grid {
@@ -426,19 +422,19 @@ button.secondary:hover {
 
 .additional-grid p {
   margin: 4px 0 0;
-  min-height: 92px;
-  font-size: 11px;
-  line-height: 1.25;
+  min-height: 110px;
+  font-size: 9.5px;
+  line-height: 1.15;
 }
 
 .nfce-page {
-  width: 315px;
+  width: 720px;
   margin: 0 auto;
-  padding: 8px 10px;
+  padding: 18px 22px;
   background: #fff;
   color: #111;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .nfce-page strong,
@@ -447,15 +443,20 @@ button.secondary:hover {
   display: block;
 }
 
+.nfce-consulta {
+  margin-bottom: 14px;
+  font-size: 12px;
+}
+
 .nfce-issuer {
-  text-align: center;
-  border-bottom: 1px dashed #111;
-  padding-bottom: 8px;
+  margin-bottom: 14px;
+  text-align: left;
 }
 
 .nfce-issuer strong {
+  display: inline;
   font-size: 13px;
-  margin-bottom: 4px;
+  margin-right: 0;
 }
 
 .nfce-issuer span,
@@ -466,60 +467,24 @@ button.secondary:hover {
   line-height: 1.25;
 }
 
-.nfce-title {
-  padding: 8px 0;
-  text-align: center;
-  border-bottom: 1px dashed #111;
-}
-
-.nfce-title strong {
-  font-size: 16px;
-}
-
-.nfce-title b {
-  margin-top: 4px;
-  font-size: 10px;
-}
-
-.nfce-message {
-  padding: 7px 0;
-  text-align: center;
-  border-bottom: 1px dashed #111;
-}
-
 .nfce-products {
-  padding-top: 8px;
+  margin-bottom: 10px;
 }
 
-.nfce-products-head,
-.nfce-products-subhead,
-.nfce-product > div:last-child,
 .nfce-totals > div,
 .nfce-payment [data-field="payments"] > div {
   display: grid;
-  grid-template-columns: 58px 1fr;
+  grid-template-columns: 1fr 120px;
   gap: 6px;
 }
 
-.nfce-products-subhead,
-.nfce-product > div:last-child {
-  grid-template-columns: 58px 24px 1fr 1fr;
-  text-align: right;
-}
-
-.nfce-products-head,
-.nfce-products-subhead {
-  font-weight: 700;
-  border-bottom: 1px solid #111;
-  padding-bottom: 3px;
-}
-
 .nfce-product {
-  padding: 5px 0;
-  border-bottom: 1px dotted #777;
+  margin-bottom: 6px;
+  line-height: 1.25;
 }
 
 .nfce-product strong {
+  display: inline;
   font-weight: 400;
 }
 
@@ -527,16 +492,16 @@ button.secondary:hover {
 .nfce-payment,
 .nfce-trib,
 .nfce-consumer,
+.nfce-general,
 .nfce-qr,
 .nfce-access,
 .nfce-extra {
-  padding: 8px 0;
-  border-top: 1px dashed #111;
+  padding: 5px 0;
 }
 
 .nfce-totals > div,
 .nfce-payment [data-field="payments"] > div {
-  grid-template-columns: 1fr 96px;
+  grid-template-columns: 1fr 120px;
 }
 
 .nfce-totals strong,
@@ -545,34 +510,34 @@ button.secondary:hover {
 }
 
 .nfce-grand-total {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
 }
 
-.nfce-payment h2 {
+.nfce-payment h2,
+.nfce-general h2,
+.nfce-access h2,
+.nfce-consumer h2,
+.nfce-extra h2 {
   margin: 0 0 4px;
-  font-size: 11px;
-  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.nfce-trib,
-.nfce-consumer,
-.nfce-access,
-.nfce-extra {
-  text-align: center;
+.nfce-trib {
+  margin: 8px 0;
 }
 
 .nfce-qr {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 8px;
-  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
 }
 
 .qr-placeholder {
   display: grid;
-  width: 112px;
-  height: 112px;
+  width: 170px;
+  height: 170px;
   place-items: center;
   border: 1px solid #111;
   background:
@@ -595,8 +560,9 @@ button.secondary:hover {
 }
 
 .nfce-access b {
+  display: inline;
   margin-top: 6px;
-  font-size: 10px;
+  font-size: 13px;
   word-spacing: 2px;
 }
 
@@ -633,7 +599,7 @@ td.number {
 }
 
 .products-table .col-code { width: 70px; }
-.products-table .col-desc { width: 220px; }
+.products-table .col-desc { width: 218px; }
 .products-table .col-ncm { width: 48px; }
 .products-table .col-cst { width: 36px; }
 .products-table .col-cfop { width: 34px; }
@@ -643,8 +609,8 @@ td.number {
 .products-table .col-total { width: 54px; }
 .products-table .col-bc { width: 54px; }
 .products-table .col-icms { width: 54px; }
-.products-table .col-ipi { width: 48px; }
-.products-table .col-aliq { width: 36px; }
+.products-table .col-ipi { width: 45px; }
+.products-table .col-aliq { width: 34px; }
 
 @media (max-width: 760px) {
   .topbar,
@@ -672,7 +638,7 @@ td.number {
   }
 
   .nfce-page {
-    min-width: 315px;
+    min-width: 720px;
   }
 }
 
@@ -711,7 +677,7 @@ td.number {
   }
 
   .nfce-page {
-    width: 68mm;
+    width: 100%;
     margin: 0 auto;
     padding: 0;
   }

@@ -168,6 +168,7 @@ function parseNfe(xmlText) {
     value: money(text(payment, "vPag")),
     valueNumber: decimalText(text(payment, "vPag")),
   }));
+  const valorPago = payments.reduce((sum, payment) => sum + Number(String(payment.valueNumber).replace(/\./g, "").replace(",", ".")), 0);
 
   return {
     model,
@@ -197,6 +198,7 @@ function parseNfe(xmlText) {
     destFone: text(destAddressNode, "fone"),
     destIE: text(dest, "IE"),
     emissaoData: dateOnly(dhEmi),
+    emissaoCompleta: dateTime(dhEmi),
     saidaHora: timeOnly(dhSaiEnt),
     items,
     itemCount: String(items.length),
@@ -209,17 +211,24 @@ function parseNfe(xmlText) {
     vSeg: money(text(total, "vSeg")),
     vDesc: money(text(total, "vDesc")),
     vOutro: money(text(total, "vOutro")),
+    vII: money(text(total, "vII")),
     vIPI: money(text(total, "vIPI")),
+    vPIS: money(text(total, "vPIS")),
+    vCOFINS: money(text(total, "vCOFINS")),
+    vTotTrib: money(text(total, "vTotTrib")),
     vNF: money(text(total, "vNF")),
     vProdNumber: decimalText(text(total, "vProd")),
     vDescNumber: decimalText(text(total, "vDesc")),
     vOutroNumber: decimalText(text(total, "vOutro")),
     vNFNumber: decimalText(text(total, "vNF")),
+    valorPagoNumber: valorPago.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
     tributos: `Tributos incidentes: ${money(text(total, "vTotTrib"))}`,
     payments,
     mensagemFiscal: model === "65" ? "NFC-e emitida em ambiente de producao" : "",
     qrCodeUrl: qrCode,
     consultaUrl: qrCode || "www.nfce.fazenda.gov.br",
+    consultaDataHora: new Date().toLocaleString("pt-BR"),
+    destEnderecoNfce: [destAddressParts.street, destAddressParts.complement, destAddressParts.district, destAddressParts.city, destAddressParts.uf].filter(Boolean).join(" , "),
     transportador: text(transporta, "xNome"),
     modFrete: freightMode(text(transp, "modFrete")),
     placa: text(veicTransp, "placa"),
@@ -292,13 +301,8 @@ function renderNfce(data) {
     const row = document.createElement("div");
     row.className = "nfce-product";
     row.innerHTML = `
-      <div><span>${escapeHtml(item.code)}</span><strong>${escapeHtml(item.description)}</strong></div>
-      <div>
-        <span>${escapeHtml(item.quantity)}</span>
-        <span>${escapeHtml(item.unit)}</span>
-        <span>${escapeHtml(decimalFromMoney(item.unitValue))}</span>
-        <span>${escapeHtml(decimalFromMoney(item.total))}</span>
-      </div>
+      <strong>${escapeHtml(item.description)} (Código: ${escapeHtml(item.code)} )</strong>
+      <span>Qtde.:${escapeHtml(item.quantity)} UN: ${escapeHtml(item.unit)} Vl. Unit.: ${escapeHtml(decimalFromMoney(item.unitValue))} Vl. Total ${escapeHtml(decimalFromMoney(item.total))}</span>
     `;
     itemsHost.appendChild(row);
   });
