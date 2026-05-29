@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Consulta DANFE | Sono Show</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">SS</div>
+        <div>
+          <strong>Sono Show Moveis</strong>
+          <span>Consulta de DANFE</span>
+        </div>
+      </div>
+      <a class="site-link" href="https://www.sonoshowmoveis.com.br/" target="_blank" rel="noreferrer">Site oficial</a>
+    </header>
+
+    <main>
+      <section class="search-panel" aria-labelledby="page-title">
+        <div class="search-copy">
+          <p class="eyebrow">Nota Fiscal Eletronica</p>
+          <h1 id="page-title">Consulte sua DANFE pela chave de acesso</h1>
+          <p>Digite os 44 numeros da chave da NF-e para visualizar a DANFE e imprimir ou salvar em PDF.</p>
+        </div>
+
+        <form id="consulta-form" class="query-form">
+          <label for="access-key">Chave de acesso</label>
+          <div class="field-row">
+            <input
+              id="access-key"
+              name="accessKey"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="54"
+              placeholder="0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000"
+              required
+            >
+            <button type="submit">Consultar</button>
+          </div>
+          <p class="hint">A chave fica no DANFE ou no comprovante enviado pela loja.</p>
+        </form>
+      </section>
+
+      <section id="status" class="status" role="status" aria-live="polite" hidden></section>
+
+      <section id="actions" class="actions" hidden>
+        <button id="print-button" type="button">Imprimir / Salvar PDF</button>
+        <button id="xml-button" type="button" class="secondary">Baixar XML</button>
+      </section>
+
+      <section id="danfe" class="danfe-shell" hidden></section>
+    </main>
+
+    <template id="danfe-template">
+      <article class="danfe-page">
+        <div class="danfe-header">
+          <div class="issuer">
+            <strong data-field="emitNome"></strong>
+            <span data-field="emitEndereco"></span>
+            <span data-field="emitDoc"></span>
+          </div>
+          <div class="danfe-title">
+            <strong>DANFE</strong>
+            <span>Documento Auxiliar da Nota Fiscal Eletronica</span>
+            <small>NF-e</small>
+          </div>
+          <div class="danfe-number">
+            <span>Numero</span>
+            <strong data-field="numero"></strong>
+            <span>Serie</span>
+            <strong data-field="serie"></strong>
+          </div>
+        </div>
+
+        <div class="access-key">
+          <span>Chave de acesso</span>
+          <strong data-field="chave"></strong>
+        </div>
+
+        <div class="grid-two">
+          <div class="box">
+            <h2>Protocolo de autorizacao</h2>
+            <p data-field="protocolo"></p>
+          </div>
+          <div class="box">
+            <h2>Natureza da operacao</h2>
+            <p data-field="natureza"></p>
+          </div>
+        </div>
+
+        <div class="box">
+          <h2>Destinatario</h2>
+          <div class="details-grid">
+            <span>Nome</span><strong data-field="destNome"></strong>
+            <span>Documento</span><strong data-field="destDoc"></strong>
+            <span>Endereco</span><strong data-field="destEndereco"></strong>
+            <span>Emissao</span><strong data-field="emissao"></strong>
+          </div>
+        </div>
+
+        <div class="box">
+          <h2>Produtos</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cod.</th>
+                  <th>Descricao</th>
+                  <th>NCM</th>
+                  <th>CFOP</th>
+                  <th>Qtd.</th>
+                  <th>Un.</th>
+                  <th>Valor un.</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody data-field="items"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="totals">
+          <div><span>Base ICMS</span><strong data-field="vBC"></strong></div>
+          <div><span>Valor ICMS</span><strong data-field="vICMS"></strong></div>
+          <div><span>Produtos</span><strong data-field="vProd"></strong></div>
+          <div><span>Total NF-e</span><strong data-field="vNF"></strong></div>
+        </div>
+
+        <div class="box">
+          <h2>Dados adicionais</h2>
+          <p class="additional" data-field="infCpl"></p>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
