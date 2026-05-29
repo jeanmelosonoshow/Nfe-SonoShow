@@ -1,12 +1,14 @@
 :root {
-  --brand: #e1261c;
-  --brand-dark: #a31914;
-  --ink: #1f2933;
-  --muted: #65758b;
-  --line: #d7dee8;
-  --soft: #f4f7fb;
+  --brand: #d71920;
+  --brand-dark: #95161b;
+  --brand-blue: #243c72;
+  --brand-gold: #f7c948;
+  --ink: #17213b;
+  --muted: #5f6d83;
+  --line: #dfe6ef;
+  --soft: #f7f9fc;
   --paper: #ffffff;
-  --warning: #fff5e6;
+  --warning: #fff8e1;
 }
 
 * {
@@ -16,7 +18,8 @@
 body {
   margin: 0;
   color: var(--ink);
-  background: linear-gradient(180deg, #ffffff 0%, #f3f6fa 100%);
+  background:
+    linear-gradient(180deg, rgba(255, 248, 225, 0.62) 0%, rgba(247, 249, 252, 0.96) 42%, #eef3f8 100%);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -27,7 +30,8 @@ body {
   gap: 16px;
   padding: 18px clamp(16px, 4vw, 48px);
   border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 8px 28px rgba(23, 33, 59, 0.06);
 }
 
 .brand {
@@ -37,19 +41,32 @@ body {
 }
 
 .brand-mark {
-  display: grid;
-  width: 44px;
+  display: flex;
+  width: 116px;
   height: 44px;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
-  color: #fff;
-  background: var(--brand);
-  font-weight: 800;
+  background: #fff;
+  border: 1px solid rgba(215, 25, 32, 0.16);
+  box-shadow: 0 8px 22px rgba(23, 33, 59, 0.08);
+  overflow: hidden;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 5px 7px;
 }
 
 .brand strong,
 .brand span {
   display: block;
+}
+
+.brand strong {
+  color: var(--brand-blue);
 }
 
 .brand span,
@@ -60,6 +77,7 @@ body {
 }
 
 .site-link {
+  color: var(--brand-blue);
   font-weight: 700;
   text-decoration: none;
 }
@@ -75,10 +93,10 @@ main {
   gap: clamp(20px, 4vw, 48px);
   align-items: center;
   padding: clamp(24px, 5vw, 48px);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(36, 60, 114, 0.12);
   border-radius: 8px;
   background: var(--paper);
-  box-shadow: 0 18px 50px rgba(31, 41, 51, 0.08);
+  box-shadow: 0 18px 50px rgba(23, 33, 59, 0.09);
 }
 
 .eyebrow {
@@ -141,7 +159,7 @@ button {
   border: 0;
   border-radius: 8px;
   color: #fff;
-  background: var(--brand);
+  background: linear-gradient(180deg, #e32228 0%, var(--brand) 100%);
   font-size: 15px;
   font-weight: 800;
   cursor: pointer;
@@ -185,6 +203,69 @@ button.secondary:hover {
   border-color: #8ed0ad;
   background: #eefaf3;
   color: #146c3f;
+}
+
+.status.recovery {
+  padding: 0;
+  border-color: rgba(215, 25, 32, 0.18);
+  background: linear-gradient(180deg, #ffffff 0%, #fffdf7 100%);
+  color: var(--ink);
+  box-shadow: 0 16px 44px rgba(23, 33, 59, 0.09);
+}
+
+.recovery-card {
+  display: grid;
+  grid-template-columns: 154px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 22px;
+}
+
+.recovery-logo {
+  display: flex;
+  width: 154px;
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgba(215, 25, 32, 0.14);
+  box-shadow: inset 0 -4px 0 rgba(247, 201, 72, 0.34);
+}
+
+.recovery-logo img {
+  width: 100%;
+  max-height: 64px;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.recovery-message {
+  display: grid;
+  gap: 6px;
+}
+
+.recovery-message strong {
+  color: var(--brand-blue);
+  font-size: 18px;
+}
+
+.recovery-message p {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.recovery-message a {
+  color: var(--brand);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.recovery-message span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .actions {
@@ -1050,6 +1131,18 @@ td {
     grid-template-columns: 1fr;
   }
 
+  .brand-mark {
+    width: 104px;
+  }
+
+  .recovery-card {
+    grid-template-columns: 1fr;
+  }
+
+  .recovery-logo {
+    width: 148px;
+  }
+
   .danfe-page {
     min-width: 210mm;
   }
@@ -1117,3 +1210,4 @@ td {
     border-color: #000;
   }
 }
+  color: var(--brand-blue);

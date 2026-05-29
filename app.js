@@ -1,5 +1,6 @@
 const CONFIG = {
   apiUrl: "/api/nfe",
+  logoUrl: "https://sonoshowmoveis.vtexassets.com/assets/vtex.file-manager-graphql/images/9c25daff-344c-4bbf-9adf-054dba3b5137___c25ce75d1124b3ba71eebaaf2a2527e2.png",
 };
 
 const form = document.querySelector("#consulta-form");
@@ -46,6 +47,10 @@ form.addEventListener("submit", async (event) => {
     console.error(error);
     danfeHost.hidden = true;
     actions.hidden = true;
+    if (shouldShowRecoveryMessage(error)) {
+      showRecoveryStatus();
+      return;
+    }
     showStatus(error.message || "Nao foi possivel consultar a NF-e.", "error");
   }
 });
@@ -463,6 +468,35 @@ function showStatus(message, type = "") {
   statusBox.textContent = message;
   statusBox.className = `status ${type}`.trim();
   statusBox.hidden = false;
+}
+
+function showRecoveryStatus() {
+  statusBox.className = "status recovery";
+  statusBox.innerHTML = `
+    <div class="recovery-card">
+      <div class="recovery-logo">
+        <img src="${CONFIG.logoUrl}" alt="Sono Show Moveis">
+      </div>
+      <div class="recovery-message">
+        <strong>Não foi possivel Recuperar sua Nota por aqui.</strong>
+        <p>Por favor entre em contato com o nosso SAC através do whatsapp <a href="https://wa.me/5521975145677" target="_blank" rel="noreferrer">(21) 97514-5677</a> ou por e-mail <a href="mailto:SAC@SONOSHOW.COM.BR">SAC@SONOSHOW.COM.BR</a>.</p>
+        <span>HORÁRIO DE ATENDIMENTO: SEGUNDA A SEXTA DE 09:00 AS 17:00</span>
+      </div>
+    </div>
+  `;
+  statusBox.hidden = false;
+}
+
+function shouldShowRecoveryMessage(error) {
+  const message = String(error?.message || "").toLowerCase();
+  return message.includes("nao encontrada")
+    || message.includes("não encontrada")
+    || message.includes("xml nao encontrado")
+    || message.includes("xml não encontrado")
+    || message.includes("nao trouxe o xml")
+    || message.includes("não trouxe o xml")
+    || message.includes("nota nao encontrada")
+    || message.includes("nota não encontrada");
 }
 
 function first(scope, tag) {
