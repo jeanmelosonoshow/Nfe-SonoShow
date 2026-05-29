@@ -70,13 +70,18 @@ export default async function handler(req, res) {
 
   Firebird.attach(options, function attachCallback(err, db) {
     if (err) {
-      console.error("Erro de Conexao Firebird:", {
+      const technicalError = {
         message: err.message,
         code: err.code,
+      };
+
+      console.error("Erro de Conexao Firebird:", {
+        ...technicalError,
         hostConfigured: Boolean(process.env.DB_HOST_FB),
         portConfigured: Boolean(process.env.DB_PORT_FB),
         databaseConfigured: Boolean(process.env.DB_PATH_FB),
       });
+
       return finish(500, {
         erro: "Falha ao conectar no servidor remoto. Verifique as variaveis da Vercel, rede/firewall e logs da funcao.",
       });

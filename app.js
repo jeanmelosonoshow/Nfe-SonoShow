@@ -120,45 +120,101 @@ function parseNfe(xmlText) {
   const dest = first(root, "dest");
   const total = first(root, "ICMSTot");
   const infProt = first(root, "infProt");
+  const transp = first(root, "transp");
+  const transporta = first(transp, "transporta");
+  const veicTransp = first(transp, "veicTransp");
+  const volume = first(transp, "vol");
+  const infAdic = first(root, "infAdic");
 
   const items = all(root, "det").map((det) => {
     const prod = first(det, "prod");
+    const imposto = first(det, "imposto");
+    const icmsNode = firstElement(first(imposto, "ICMS"));
+    const ipiNode = firstElement(first(imposto, "IPI"));
     return {
       code: text(prod, "cProd"),
       description: text(prod, "xProd"),
       ncm: text(prod, "NCM"),
+      cst: [text(icmsNode, "orig"), text(icmsNode, "CST") || text(icmsNode, "CSOSN")].filter(Boolean).join(""),
       cfop: text(prod, "CFOP"),
       quantity: numberText(text(prod, "qCom")),
       unit: text(prod, "uCom"),
       unitValue: money(text(prod, "vUnCom")),
+      discount: money(text(prod, "vDesc")),
       total: money(text(prod, "vProd")),
+      vBC: money(text(icmsNode, "vBC")),
+      vICMS: money(text(icmsNode, "vICMS")),
+      vIPI: money(text(ipiNode, "vIPI")),
+      pICMS: percent(text(icmsNode, "pICMS")),
+      pIPI: percent(text(ipiNode, "pIPI")),
     };
   });
 
   const emitAddress = address(first(emit, "enderEmit"));
-  const destAddress = address(first(dest, "enderDest"));
+  const destAddressNode = first(dest, "enderDest");
+  const destAddressParts = addressParts(destAddressNode);
   const keyFromId = (infNFe?.getAttribute("Id") || "").replace(/^NFe/, "");
   const key = text(infProt, "chNFe") || keyFromId;
+  const dhEmi = text(ide, "dhEmi");
+  const dhSaiEnt = text(ide, "dhSaiEnt");
+  const emitCnpj = text(emit, "CNPJ");
+  const destDoc = text(dest, "CNPJ") || text(dest, "CPF");
+  const transpDoc = text(transporta, "CNPJ") || text(transporta, "CPF");
 
   return {
     emitNome: text(emit, "xNome"),
     emitEndereco: emitAddress,
     emitDoc: docLabel(text(emit, "CNPJ")),
+    emitCnpj: docValue(emitCnpj),
+    emitIe: `IE ${text(emit, "IE") || "-"}`,
+    emitIEValue: text(emit, "IE"),
+    emitIEST: text(emit, "IEST"),
     numero: text(ide, "nNF"),
     serie: text(ide, "serie"),
+    tpNF: text(ide, "tpNF"),
     chave: formatAccessKey(key),
+    resumoCanhoto: `${text(ide, "natOp")} - NF-e Nº ${text(ide, "nNF")} - Serie ${text(ide, "serie")}`,
     protocolo: protocolText(infProt),
     natureza: text(ide, "natOp"),
     destNome: text(dest, "xNome"),
     destDoc: docLabel(text(dest, "CNPJ") || text(dest, "CPF")),
-    destEndereco: destAddress,
-    emissao: dateTime(text(ide, "dhEmi")),
+    destDocValue: docValue(destDoc),
+    destLogradouro: [destAddressParts.street, destAddressParts.complement].filter(Boolean).join(" - "),
+    destBairro: destAddressParts.district,
+    destCep: formatCep(destAddressParts.cep),
+    destMunicipio: destAddressParts.city,
+    destUF: destAddressParts.uf,
+    destFone: text(destAddressNode, "fone"),
+    destIE: text(dest, "IE"),
+    emissaoData: dateOnly(dhEmi),
+    saidaHora: timeOnly(dhSaiEnt),
     items,
     vBC: money(text(total, "vBC")),
     vICMS: money(text(total, "vICMS")),
+    vBCST: money(text(total, "vBCST")),
+    vST: money(text(total, "vST")),
     vProd: money(text(total, "vProd")),
+    vFrete: money(text(total, "vFrete")),
+    vSeg: money(text(total, "vSeg")),
+    vDesc: money(text(total, "vDesc")),
+    vOutro: money(text(total, "vOutro")),
+    vIPI: money(text(total, "vIPI")),
     vNF: money(text(total, "vNF")),
-    infCpl: text(first(root, "infAdic"), "infCpl") || "Sem informacoes adicionais.",
+    transportador: text(transporta, "xNome"),
+    modFrete: freightMode(text(transp, "modFrete")),
+    placa: text(veicTransp, "placa"),
+    veicUF: text(veicTransp, "UF"),
+    transpDoc: docValue(transpDoc),
+    transpEndereco: text(transporta, "xEnder"),
+    transpMunicipio: text(transporta, "xMun"),
+    transpUF: text(transporta, "UF"),
+    transpIE: text(transporta, "IE"),
+    qVol: numberText(text(volume, "qVol")),
+    espVol: text(volume, "esp"),
+    pesoL: weight(text(volume, "pesoL")),
+    pesoB: weight(text(volume, "pesoB")),
+    infCpl: text(infAdic, "infCpl") || "Sem informacoes adicionais.",
+    infAdFisco: text(infAdic, "infAdFisco") || "-",
   };
 }
 
@@ -178,11 +234,18 @@ function renderDanfe(data) {
       <td>${escapeHtml(item.code)}</td>
       <td>${escapeHtml(item.description)}</td>
       <td>${escapeHtml(item.ncm)}</td>
+      <td>${escapeHtml(item.cst)}</td>
       <td>${escapeHtml(item.cfop)}</td>
-      <td class="number">${escapeHtml(item.quantity)}</td>
       <td>${escapeHtml(item.unit)}</td>
+      <td class="number">${escapeHtml(item.quantity)}</td>
       <td class="number">${escapeHtml(item.unitValue)}</td>
+      <td class="number">${escapeHtml(item.discount)}</td>
       <td class="number">${escapeHtml(item.total)}</td>
+      <td class="number">${escapeHtml(item.vBC)}</td>
+      <td class="number">${escapeHtml(item.vICMS)}</td>
+      <td class="number">${escapeHtml(item.vIPI)}</td>
+      <td class="number">${escapeHtml(item.pICMS)}</td>
+      <td class="number">${escapeHtml(item.pIPI)}</td>
     `;
     body.appendChild(row);
   });
@@ -199,6 +262,10 @@ function showStatus(message, type = "") {
 
 function first(scope, tag) {
   return scope?.getElementsByTagName(tag)[0] || null;
+}
+
+function firstElement(scope) {
+  return Array.from(scope?.children || [])[0] || null;
 }
 
 function all(scope, tag) {
@@ -232,6 +299,12 @@ function money(value) {
   return number.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
+function percent(value) {
+  if (!value) return "0,00";
+  const number = Number(String(value || "0").replace(",", "."));
+  return number.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 function numberText(value) {
   const number = Number(String(value || "0").replace(",", "."));
   return number.toLocaleString("pt-BR", { maximumFractionDigits: 4 });
@@ -244,6 +317,20 @@ function dateTime(value) {
   return date.toLocaleString("pt-BR");
 }
 
+function dateOnly(value) {
+  if (!value) return "-";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("pt-BR");
+}
+
+function timeOnly(value) {
+  if (!value) return "-";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+}
+
 function docLabel(value) {
   const digits = onlyDigits(value);
   if (digits.length === 14) return `CNPJ ${digits.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5")}`;
@@ -251,14 +338,58 @@ function docLabel(value) {
   return value || "-";
 }
 
+function docValue(value) {
+  return docLabel(value).replace(/^CNPJ\s|^CPF\s/, "");
+}
+
 function address(node) {
   if (!node) return "-";
-  const street = [text(node, "xLgr"), text(node, "nro")].filter(Boolean).join(", ");
-  const complement = text(node, "xCpl");
-  const district = text(node, "xBairro");
-  const city = [text(node, "xMun"), text(node, "UF")].filter(Boolean).join(" - ");
-  const cep = text(node, "CEP");
+  const parts = addressParts(node);
+  const city = [parts.city, parts.uf].filter(Boolean).join(" - ");
+  const cep = parts.cep;
+  const street = parts.street;
+  const complement = parts.complement;
+  const district = parts.district;
   return [street, complement, district, city, cep && `CEP ${cep}`].filter(Boolean).join(" | ");
+}
+
+function addressParts(node) {
+  if (!node) {
+    return { street: "-", complement: "", district: "", city: "", uf: "", cep: "" };
+  }
+
+  return {
+    street: [text(node, "xLgr"), text(node, "nro")].filter(Boolean).join(", "),
+    complement: text(node, "xCpl"),
+    district: text(node, "xBairro"),
+    city: text(node, "xMun"),
+    uf: text(node, "UF"),
+    cep: text(node, "CEP"),
+  };
+}
+
+function formatCep(value) {
+  const digits = onlyDigits(value);
+  if (digits.length === 8) return digits.replace(/^(\d{5})(\d{3})$/, "$1-$2");
+  return value || "-";
+}
+
+function freightMode(value) {
+  const modes = {
+    0: "0 - Emitente",
+    1: "1 - Destinatario",
+    2: "2 - Terceiros",
+    3: "3 - Proprio remetente",
+    4: "4 - Proprio destinatario",
+    9: "9 - Sem frete",
+  };
+  return modes[value] || value || "-";
+}
+
+function weight(value) {
+  if (!value) return "-";
+  const number = Number(String(value).replace(",", "."));
+  return `${number.toLocaleString("pt-BR", { minimumFractionDigits: 3, maximumFractionDigits: 3 })} kg`;
 }
 
 function protocolText(node) {

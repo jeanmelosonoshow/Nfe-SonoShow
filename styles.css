@@ -200,128 +200,234 @@ button.secondary:hover {
 }
 
 .danfe-page {
-  width: min(100%, 980px);
+  width: 980px;
   margin: 0 auto;
-  padding: 18px;
-  border: 1px solid #111;
+  padding: 10px;
   background: #fff;
   color: #111;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.receipt-stub {
+  display: grid;
+  grid-template-columns: 1fr 170px 360px 135px;
+  min-height: 92px;
+  font-size: 11px;
+}
+
+.receipt-stub > div,
+.danfe-cell,
+.access-panel,
+.products-section,
+.additional-grid > div {
+  border: 1px solid #111;
+}
+
+.receipt-stub p {
+  margin: 4px 6px;
+}
+
+.receipt-stub span,
+.receipt-stub strong {
+  display: block;
+}
+
+.receipt-stub > div:not(:first-child) {
+  padding: 6px;
+}
+
+.stub-nfe {
+  display: grid;
+  align-content: center;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cut-line {
+  margin: 6px 0;
+  border-top: 1px dashed #111;
 }
 
 .danfe-header {
   display: grid;
-  grid-template-columns: 1fr 220px 150px;
-  gap: 8px;
+  grid-template-columns: 410px 150px 1fr;
   align-items: stretch;
 }
 
-.issuer,
-.danfe-title,
-.danfe-number,
-.access-key,
-.box,
-.totals > div {
-  border: 1px solid #111;
-  padding: 8px;
+.danfe-cell {
+  min-height: 32px;
+  padding: 3px 6px;
 }
 
-.issuer strong,
-.issuer span,
-.danfe-number span,
-.danfe-number strong,
+.danfe-cell span,
 .access-key span,
-.access-key strong {
+.section-title {
   display: block;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.danfe-cell strong {
+  display: block;
+  min-height: 14px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.15;
 }
 
 .issuer {
-  font-size: 12px;
-  line-height: 1.4;
+  display: grid;
+  align-content: center;
+  text-align: center;
+  min-height: 148px;
 }
 
 .issuer strong {
-  font-size: 14px;
-  margin-bottom: 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.issuer span {
+  display: block;
+  font-size: 13px;
+  line-height: 1.25;
 }
 
 .danfe-title {
   display: grid;
-  place-items: center;
+  align-content: center;
+  gap: 6px;
   text-align: center;
 }
 
-.danfe-title strong {
-  font-size: 28px;
+.danfe-title > strong {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.danfe-title > span {
+  font-size: 13px;
+  line-height: 1.15;
 }
 
 .danfe-title small {
-  font-size: 18px;
-  font-weight: 800;
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
 }
 
-.danfe-number {
-  text-align: center;
-}
-
-.danfe-number span {
-  margin-top: 4px;
-  font-size: 11px;
-  text-transform: uppercase;
-}
-
-.danfe-number strong {
-  font-size: 20px;
-}
-
-.access-key {
-  margin-top: 8px;
-  text-align: center;
-}
-
-.access-key span {
-  font-size: 11px;
-  text-transform: uppercase;
-}
-
-.access-key strong {
-  font-family: "Courier New", monospace;
-  font-size: clamp(14px, 2.3vw, 22px);
-  word-break: break-all;
-}
-
-.grid-two {
+.operation-type {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.box {
-  margin-top: 8px;
-}
-
-.box h2 {
-  margin: 0 0 6px;
-  font-size: 11px;
-  text-transform: uppercase;
-}
-
-.box p {
-  margin: 0;
-  font-size: 13px;
-}
-
-.details-grid {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 4px 10px;
+  grid-template-columns: 1fr 1fr 28px;
+  align-items: center;
+  gap: 2px;
   font-size: 12px;
 }
 
-.details-grid span {
-  color: #444;
-  text-transform: uppercase;
+.operation-type b {
+  border: 1px solid #111;
+  padding: 4px;
+  font-size: 15px;
+}
+
+.access-panel {
+  display: grid;
+  grid-template-rows: 54px 38px 1fr;
+}
+
+.barcode {
+  margin: 7px auto 4px;
+  width: 300px;
+  height: 42px;
+  background: repeating-linear-gradient(90deg, #111 0 2px, transparent 2px 4px, #111 4px 5px, transparent 5px 8px);
+}
+
+.access-key {
+  border-top: 1px solid #111;
+  border-bottom: 1px solid #111;
+  padding: 3px 6px;
+  text-align: center;
+}
+
+.access-key strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  word-spacing: 4px;
+}
+
+.auth-text {
+  display: grid;
+  place-items: center;
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.danfe-row,
+.danfe-grid,
+.tax-grid,
+.transport-grid {
+  display: grid;
+}
+
+.two-cols {
+  grid-template-columns: 1fr 430px;
+}
+
+.three-cols {
+  grid-template-columns: 1fr 1fr 320px;
+}
+
+.section-title {
+  margin: 8px 0 0;
+  padding: 0;
+  color: #111;
+  font-weight: 700;
+}
+
+.destinatario-grid {
+  grid-template-columns: 1.6fr 170px 140px;
+}
+
+.destinatario-grid .wide {
+  grid-column: span 1;
+}
+
+.tax-grid {
+  grid-template-columns: repeat(5, 1fr) 120px;
+}
+
+.tax-grid .danfe-cell:last-child {
+  grid-column: span 1;
+}
+
+.transport-grid {
+  grid-template-columns: 2fr 140px 120px 60px 170px;
+}
+
+.transport-grid .wide {
+  grid-column: span 1;
+}
+
+.additional-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+.additional-grid p {
+  margin: 4px 0 0;
+  min-height: 92px;
+  font-size: 11px;
+  line-height: 1.25;
 }
 
 .table-wrap {
@@ -331,52 +437,28 @@ button.secondary:hover {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 11px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 10px;
 }
 
 th,
 td {
-  padding: 5px;
-  border: 1px solid #222;
+  padding: 3px 4px;
+  border: 1px solid #111;
   text-align: left;
   vertical-align: top;
 }
 
 th {
-  background: #f0f0f0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
 td.number {
   text-align: right;
   white-space: nowrap;
-}
-
-.totals {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.totals span,
-.totals strong {
-  display: block;
-}
-
-.totals span {
-  font-size: 10px;
-  text-transform: uppercase;
-}
-
-.totals strong {
-  font-size: 15px;
-}
-
-.additional {
-  max-height: 120px;
-  overflow: hidden;
-  line-height: 1.35;
 }
 
 @media (max-width: 760px) {
@@ -396,15 +478,12 @@ td.number {
   }
 
   .search-panel,
-  .field-row,
-  .danfe-header,
-  .grid-two,
-  .totals {
+  .field-row {
     grid-template-columns: 1fr;
   }
 
   .danfe-page {
-    min-width: 720px;
+    min-width: 980px;
   }
 }
 
@@ -439,7 +518,16 @@ td.number {
     width: 100%;
     margin: 0;
     padding: 0;
-    border: 1px solid #111;
     box-shadow: none;
+  }
+
+  .danfe-cell,
+  .receipt-stub > div,
+  .access-panel,
+  .products-section,
+  .additional-grid > div,
+  th,
+  td {
+    border-color: #000;
   }
 }

@@ -56,83 +56,154 @@
 
     <template id="danfe-template">
       <article class="danfe-page">
-        <div class="danfe-header">
-          <div class="issuer">
+        <section class="receipt-stub">
+          <div>
+            <p>Recebemos de <strong data-field="emitNome"></strong> os produtos constantes da Nota Fiscal Eletronica indicada ao lado.</p>
+            <p data-field="resumoCanhoto"></p>
+          </div>
+          <div>
+            <span>Data do recebimento</span>
+          </div>
+          <div>
+            <span>Identificacao e assinatura do recebedor</span>
+          </div>
+          <div class="stub-nfe">
+            <strong>NF-e</strong>
+            <span>Nº <b data-field="numero"></b></span>
+            <span>Serie <b data-field="serie"></b></span>
+          </div>
+        </section>
+
+        <div class="cut-line"></div>
+
+        <section class="danfe-header">
+          <div class="issuer danfe-cell">
             <strong data-field="emitNome"></strong>
             <span data-field="emitEndereco"></span>
             <span data-field="emitDoc"></span>
+            <span data-field="emitIe"></span>
           </div>
-          <div class="danfe-title">
+          <div class="danfe-title danfe-cell">
             <strong>DANFE</strong>
             <span>Documento Auxiliar da Nota Fiscal Eletronica</span>
-            <small>NF-e</small>
+            <div class="operation-type">
+              <span>0 - Entrada</span>
+              <span>1 - Saida</span>
+              <b data-field="tpNF"></b>
+            </div>
+            <small>Nº <b data-field="numero"></b></small>
+            <small>Serie <b data-field="serie"></b> - Folha 1/1</small>
           </div>
-          <div class="danfe-number">
-            <span>Numero</span>
-            <strong data-field="numero"></strong>
-            <span>Serie</span>
-            <strong data-field="serie"></strong>
+          <div class="access-panel">
+            <div class="barcode" aria-hidden="true"></div>
+            <div class="access-key">
+              <span>Chave de acesso</span>
+              <strong data-field="chave"></strong>
+            </div>
+            <div class="auth-text">
+              Consulta de autenticidade no portal nacional da NF-e
+              www.nfe.fazenda.gov.br/portal ou no site da Sefaz autorizadora
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div class="access-key">
-          <span>Chave de acesso</span>
-          <strong data-field="chave"></strong>
-        </div>
-
-        <div class="grid-two">
-          <div class="box">
-            <h2>Protocolo de autorizacao</h2>
-            <p data-field="protocolo"></p>
+        <section class="danfe-row two-cols">
+          <div class="danfe-cell">
+            <span>Natureza da operacao</span>
+            <strong data-field="natureza"></strong>
           </div>
-          <div class="box">
-            <h2>Natureza da operacao</h2>
-            <p data-field="natureza"></p>
+          <div class="danfe-cell">
+            <span>Protocolo de autorizacao de uso</span>
+            <strong data-field="protocolo"></strong>
           </div>
-        </div>
+        </section>
 
-        <div class="box">
-          <h2>Destinatario</h2>
-          <div class="details-grid">
-            <span>Nome</span><strong data-field="destNome"></strong>
-            <span>Documento</span><strong data-field="destDoc"></strong>
-            <span>Endereco</span><strong data-field="destEndereco"></strong>
-            <span>Emissao</span><strong data-field="emissao"></strong>
-          </div>
-        </div>
+        <section class="danfe-row three-cols">
+          <div class="danfe-cell"><span>Inscricao estadual</span><strong data-field="emitIEValue"></strong></div>
+          <div class="danfe-cell"><span>Inscricao estadual do substituto tributario</span><strong data-field="emitIEST"></strong></div>
+          <div class="danfe-cell"><span>CNPJ</span><strong data-field="emitCnpj"></strong></div>
+        </section>
 
-        <div class="box">
-          <h2>Produtos</h2>
+        <h2 class="section-title">Destinatario / Remetente</h2>
+        <section class="danfe-grid destinatario-grid">
+          <div class="danfe-cell wide"><span>Nome / razao social</span><strong data-field="destNome"></strong></div>
+          <div class="danfe-cell"><span>CNPJ / CPF</span><strong data-field="destDocValue"></strong></div>
+          <div class="danfe-cell"><span>Data da emissao</span><strong data-field="emissaoData"></strong></div>
+          <div class="danfe-cell wide"><span>Endereco</span><strong data-field="destLogradouro"></strong></div>
+          <div class="danfe-cell"><span>Bairro / distrito</span><strong data-field="destBairro"></strong></div>
+          <div class="danfe-cell"><span>CEP</span><strong data-field="destCep"></strong></div>
+          <div class="danfe-cell"><span>Municipio</span><strong data-field="destMunicipio"></strong></div>
+          <div class="danfe-cell"><span>UF</span><strong data-field="destUF"></strong></div>
+          <div class="danfe-cell"><span>Fone / fax</span><strong data-field="destFone"></strong></div>
+          <div class="danfe-cell"><span>Inscricao estadual</span><strong data-field="destIE"></strong></div>
+          <div class="danfe-cell"><span>Hora da saida</span><strong data-field="saidaHora"></strong></div>
+        </section>
+
+        <h2 class="section-title">Calculo do imposto</h2>
+        <section class="tax-grid">
+          <div class="danfe-cell"><span>Base calculo ICMS</span><strong data-field="vBC"></strong></div>
+          <div class="danfe-cell"><span>Valor ICMS</span><strong data-field="vICMS"></strong></div>
+          <div class="danfe-cell"><span>Base calculo ICMS ST</span><strong data-field="vBCST"></strong></div>
+          <div class="danfe-cell"><span>Valor ICMS ST</span><strong data-field="vST"></strong></div>
+          <div class="danfe-cell"><span>Valor total dos produtos</span><strong data-field="vProd"></strong></div>
+          <div class="danfe-cell"><span>Valor frete</span><strong data-field="vFrete"></strong></div>
+          <div class="danfe-cell"><span>Valor seguro</span><strong data-field="vSeg"></strong></div>
+          <div class="danfe-cell"><span>Desconto</span><strong data-field="vDesc"></strong></div>
+          <div class="danfe-cell"><span>Outras despesas</span><strong data-field="vOutro"></strong></div>
+          <div class="danfe-cell"><span>Valor IPI</span><strong data-field="vIPI"></strong></div>
+          <div class="danfe-cell"><span>Valor total da nota</span><strong data-field="vNF"></strong></div>
+        </section>
+
+        <h2 class="section-title">Transportador / Volumes transportados</h2>
+        <section class="transport-grid">
+          <div class="danfe-cell wide"><span>Razao social</span><strong data-field="transportador"></strong></div>
+          <div class="danfe-cell"><span>Frete por conta</span><strong data-field="modFrete"></strong></div>
+          <div class="danfe-cell"><span>Placa do veiculo</span><strong data-field="placa"></strong></div>
+          <div class="danfe-cell"><span>UF</span><strong data-field="veicUF"></strong></div>
+          <div class="danfe-cell"><span>CNPJ / CPF</span><strong data-field="transpDoc"></strong></div>
+          <div class="danfe-cell wide"><span>Endereco</span><strong data-field="transpEndereco"></strong></div>
+          <div class="danfe-cell"><span>Municipio</span><strong data-field="transpMunicipio"></strong></div>
+          <div class="danfe-cell"><span>UF</span><strong data-field="transpUF"></strong></div>
+          <div class="danfe-cell"><span>Inscricao estadual</span><strong data-field="transpIE"></strong></div>
+          <div class="danfe-cell"><span>Quantidade</span><strong data-field="qVol"></strong></div>
+          <div class="danfe-cell"><span>Especie</span><strong data-field="espVol"></strong></div>
+          <div class="danfe-cell"><span>Peso liquido</span><strong data-field="pesoL"></strong></div>
+          <div class="danfe-cell"><span>Peso bruto</span><strong data-field="pesoB"></strong></div>
+        </section>
+
+        <h2 class="section-title">Dados dos produtos / servicos</h2>
+        <section class="products-section">
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Cod.</th>
-                  <th>Descricao</th>
+                  <th>Codigo</th>
+                  <th>Descricao dos produtos / servicos</th>
                   <th>NCM</th>
+                  <th>CST</th>
                   <th>CFOP</th>
-                  <th>Qtd.</th>
                   <th>Un.</th>
+                  <th>Qtd.</th>
                   <th>Valor un.</th>
-                  <th>Total</th>
+                  <th>Desc.</th>
+                  <th>Valor total</th>
+                  <th>BC ICMS</th>
+                  <th>Valor ICMS</th>
+                  <th>Valor IPI</th>
+                  <th>Aliq. ICMS</th>
+                  <th>Aliq. IPI</th>
                 </tr>
               </thead>
               <tbody data-field="items"></tbody>
             </table>
           </div>
-        </div>
+        </section>
 
-        <div class="totals">
-          <div><span>Base ICMS</span><strong data-field="vBC"></strong></div>
-          <div><span>Valor ICMS</span><strong data-field="vICMS"></strong></div>
-          <div><span>Produtos</span><strong data-field="vProd"></strong></div>
-          <div><span>Total NF-e</span><strong data-field="vNF"></strong></div>
-        </div>
-
-        <div class="box">
-          <h2>Dados adicionais</h2>
-          <p class="additional" data-field="infCpl"></p>
-        </div>
+        <h2 class="section-title">Dados adicionais</h2>
+        <section class="additional-grid">
+          <div class="danfe-cell"><span>Informacoes complementares</span><p data-field="infCpl"></p></div>
+          <div class="danfe-cell"><span>Reservado ao fisco</span><p data-field="infAdFisco"></p></div>
+        </section>
       </article>
     </template>
 
