@@ -23,9 +23,17 @@ export default async function handler(req, res) {
     return res.status(400).json({ erro: "Chave de acesso invalida." });
   }
 
+  const missingEnv = getMissingDatabaseEnv();
+  if (missingEnv.length > 0) {
+    console.error("Variaveis de ambiente ausentes:", missingEnv.join(", "));
+    return res.status(500).json({
+      erro: `Configuracao do banco incompleta na Vercel: ${missingEnv.join(", ")}.`,
+    });
+  }
+
   const options = {
     host: process.env.DB_HOST_FB,
-    port: Number(process.env.DB_PORT_FB || 3050),
+    port: Number(process.env.DB_PORT_FB),
     database: process.env.DB_PATH_FB,
     user: process.env.DB_USER_FB,
     password: process.env.DB_PASSWORD_FB,
@@ -36,8 +44,16 @@ export default async function handler(req, res) {
 
   Firebird.attach(options, function attachCallback(err, db) {
     if (err) {
-      console.error("Erro de Conexao:", err.message);
-      return res.status(500).json({ erro: "Falha ao conectar no servidor remoto." });
+      console.error("Erro de Conexao Firebird:", {
+        message: err.message,
+        code: err.code,
+        hostConfigured: Boolean(process.env.DB_HOST_FB),
+        portConfigured: Boolean(process.env.DB_PORT_FB),
+        databaseConfigured: Boolean(process.env.DB_PATH_FB),
+      });
+      return res.status(500).json({
+        erro: "Falha ao conectar no servidor remoto. Verifique as variaveis da Vercel, rede/firewall e logs da funcao.",
+      });
     }
 
     const sql = process.env.NFE_XML_SQL || DEFAULT_SQL;
@@ -67,6 +83,12 @@ export default async function handler(req, res) {
         return res.status(500).json({ erro: "Nao foi possivel ler o XML da NF-e." });
       }
     });
+  });
+}
+
+function getMissingDatabaseEnv() {
+  return ["DB_HOST_FB", "DB_PORT_FB", "DB_PATH_FB", "DB_USER_FB", "DB_PASSWORD_FB"].filter((key) => {
+    return !String(process.env[key] || "").trim();
   });
 }
 
