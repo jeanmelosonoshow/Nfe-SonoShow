@@ -293,6 +293,7 @@ function buildDanfePage(data, items, { continuation, finalPage }) {
   const page = fragment.querySelector(".danfe-page");
   page.classList.toggle("danfe-continuation", continuation);
   page.classList.toggle("danfe-final-page", finalPage);
+  page.classList.toggle("danfe-has-next-page", !finalPage);
 
   fragment.querySelectorAll("[data-field]").forEach((node) => {
     const field = node.dataset.field;

@@ -615,7 +615,7 @@ td.number {
 /* DANFE fidelity pass based on the bundled FastReport templates. */
 .danfe-page {
   width: 210mm;
-  min-height: 297mm;
+  min-height: 284mm;
   padding: 7mm 7mm 7mm 6mm;
   font-size: 8pt;
   line-height: 1.05;
@@ -1088,17 +1088,17 @@ td {
 
   .danfe-page {
     width: 210mm;
-    min-height: 297mm;
+    min-height: 284mm;
     margin: 0;
     padding: 7mm 7mm 7mm 6mm;
     box-shadow: none;
-    break-after: page;
-    page-break-after: always;
-  }
-
-  .danfe-page:last-child {
     break-after: auto;
     page-break-after: auto;
+  }
+
+  .danfe-has-next-page {
+    break-after: page;
+    page-break-after: always;
   }
 
   .nfce-page {
