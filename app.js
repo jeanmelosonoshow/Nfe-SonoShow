@@ -16,7 +16,7 @@ let currentAccessKey = "";
 
 accessKeyInput.addEventListener("input", () => {
   const digits = onlyDigits(accessKeyInput.value).slice(0, 44);
-  accessKeyInput.value = digits.replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+  accessKeyInput.value = formatAccessKey(digits);
 });
 
 form.addEventListener("submit", async (event) => {
@@ -75,7 +75,8 @@ async function fetchNfeXml(accessKey) {
   });
 
   if (!response.ok) {
-    throw new Error("Nota nao encontrada ou indisponivel no momento.");
+    const errorMessage = await readErrorMessage(response);
+    throw new Error(errorMessage || "Nota nao encontrada ou indisponivel no momento.");
   }
 
   const contentType = response.headers.get("content-type") || "";
@@ -194,6 +195,16 @@ function text(scope, tag) {
 
 function onlyDigits(value) {
   return String(value || "").replace(/\D/g, "");
+}
+
+async function readErrorMessage(response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    const payload = await response.json().catch(() => null);
+    return payload?.erro || payload?.message || payload?.mensagem || "";
+  }
+
+  return response.text().catch(() => "");
 }
 
 function formatAccessKey(value) {
