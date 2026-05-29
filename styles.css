@@ -887,10 +887,26 @@ td {
 .transport-grid .danfe-cell:nth-child(16) { grid-column: span 23; }
 
 .products-section {
-  min-height: 114mm;
+  min-height: 68mm;
   border-left: 0.22mm solid #000;
   border-right: 0.22mm solid #000;
   border-bottom: 0.22mm solid #000;
+}
+
+.danfe-page + .danfe-page {
+  margin-top: 8mm;
+}
+
+.danfe-continuation .danfe-header {
+  margin-bottom: 2mm;
+}
+
+.danfe-continuation .products-section {
+  min-height: 185mm;
+}
+
+.danfe-continuation .additional-grid p {
+  min-height: 31mm;
 }
 
 .table-wrap {
@@ -1073,6 +1089,13 @@ td {
     margin: 0;
     padding: 7mm 7mm 7mm 6mm;
     box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .danfe-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
   }
 
   .nfce-page {

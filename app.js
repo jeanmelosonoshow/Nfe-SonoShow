@@ -271,7 +271,28 @@ function renderDanfe(data) {
     return;
   }
 
+  const itemPages = splitDanfeItems(data.items);
+  if (itemPages.length > 1) {
+    const pages = itemPages.map((items, index) => {
+      return buildDanfePage(data, items, {
+        continuation: index > 0,
+        finalPage: index === itemPages.length - 1,
+      });
+    });
+    danfeHost.replaceChildren(...pages);
+    danfeHost.hidden = false;
+    return;
+  }
+
+  danfeHost.replaceChildren(buildDanfePage(data, data.items, { continuation: false, finalPage: true }));
+  danfeHost.hidden = false;
+}
+
+function buildDanfePage(data, items, { continuation, finalPage }) {
   const fragment = danfeTemplate.content.cloneNode(true);
+  const page = fragment.querySelector(".danfe-page");
+  page.classList.toggle("danfe-continuation", continuation);
+  page.classList.toggle("danfe-final-page", finalPage);
 
   fragment.querySelectorAll("[data-field]").forEach((node) => {
     const field = node.dataset.field;
@@ -282,9 +303,10 @@ function renderDanfe(data) {
   });
 
   renderBilling(fragment, data.billing);
+  prepareDanfePageSections(fragment, { continuation, finalPage });
 
   const body = fragment.querySelector('[data-field="items"]');
-  data.items.forEach((item) => {
+  items.forEach((item) => {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${escapeHtml(item.code)}</td>
@@ -305,8 +327,62 @@ function renderDanfe(data) {
     body.appendChild(row);
   });
 
-  danfeHost.replaceChildren(fragment);
-  danfeHost.hidden = false;
+  return page;
+}
+
+function splitDanfeItems(items) {
+  const firstPageLimit = 7;
+  const nextPageLimit = 18;
+  if (items.length <= firstPageLimit) return [items];
+
+  const pages = [items.slice(0, firstPageLimit)];
+  for (let index = firstPageLimit; index < items.length; index += nextPageLimit) {
+    pages.push(items.slice(index, index + nextPageLimit));
+  }
+  return pages;
+}
+
+function prepareDanfePageSections(fragment, { continuation, finalPage }) {
+  if (!continuation && finalPage) return;
+
+  if (continuation) {
+    removeNodes(fragment, [
+      ".receipt-stub",
+      ".cut-line",
+      ".two-cols",
+      ".three-cols",
+      ".destinatario-grid",
+      ".tax-grid",
+      ".billing-grid",
+      ".transport-grid",
+    ]);
+    removeSectionTitles(fragment, [
+      "Destinatario / Remetente",
+      "Calculo do imposto",
+      "Fatura / Duplicatas",
+      "Transportador / Volumes transportados",
+    ]);
+  }
+
+  if (!finalPage) {
+    removeNodes(fragment, [".additional-grid"]);
+    removeSectionTitles(fragment, ["Dados adicionais"]);
+  }
+}
+
+function removeNodes(fragment, selectors) {
+  selectors.forEach((selector) => {
+    fragment.querySelectorAll(selector).forEach((node) => node.remove());
+  });
+}
+
+function removeSectionTitles(fragment, titles) {
+  fragment.querySelectorAll(".section-title").forEach((title) => {
+    const normalized = title.textContent.trim().toLowerCase();
+    if (titles.some((text) => normalized === text.toLowerCase())) {
+      title.remove();
+    }
+  });
 }
 
 function renderBilling(fragment, billing) {
