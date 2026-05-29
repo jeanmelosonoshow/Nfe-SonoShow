@@ -9,7 +9,6 @@ const statusBox = document.querySelector("#status");
 const danfeHost = document.querySelector("#danfe");
 const actions = document.querySelector("#actions");
 const printButton = document.querySelector("#print-button");
-const xmlButton = document.querySelector("#xml-button");
 const danfeTemplate = document.querySelector("#danfe-template");
 const nfceTemplate = document.querySelector("#nfce-template");
 
@@ -57,18 +56,6 @@ form.addEventListener("submit", async (event) => {
 
 printButton.addEventListener("click", () => {
   window.print();
-});
-
-xmlButton.addEventListener("click", () => {
-  if (!currentXml) return;
-
-  const blob = new Blob([currentXml], { type: "application/xml;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `${currentAccessKey || "nfe"}.xml`;
-  link.click();
-  URL.revokeObjectURL(url);
 });
 
 async function fetchNfeXml(accessKey) {
