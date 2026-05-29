@@ -57,14 +57,14 @@
     <template id="danfe-template">
       <article class="danfe-page">
         <section class="receipt-stub">
-          <div>
+          <div class="stub-text">
             <p>Recebemos de <strong data-field="emitNome"></strong> os produtos constantes da Nota Fiscal Eletronica indicada ao lado.</p>
             <p data-field="resumoCanhoto"></p>
           </div>
-          <div>
+          <div class="stub-date">
             <span>Data do recebimento</span>
           </div>
-          <div>
+          <div class="stub-signature">
             <span>Identificacao e assinatura do recebedor</span>
           </div>
           <div class="stub-nfe">
@@ -161,6 +161,9 @@
           <div class="danfe-cell"><span>V. total da nota</span><strong data-field="vNF"></strong></div>
         </section>
 
+        <h2 class="section-title" data-field="billingTitle">Fatura / Duplicatas</h2>
+        <section class="billing-grid" data-field="billing"></section>
+
         <h2 class="section-title">Transportador / Volumes transportados</h2>
         <section class="transport-grid">
           <div class="danfe-cell wide"><span>Razao social</span><strong data-field="transportador"></strong></div>
@@ -191,6 +194,7 @@
                 <col class="col-un">
                 <col class="col-qty">
                 <col class="col-unit">
+                <col class="col-discount">
                 <col class="col-total">
                 <col class="col-bc">
                 <col class="col-icms">
@@ -208,6 +212,7 @@
                   <th>Un.</th>
                   <th>Qtd.</th>
                   <th>Valor un.</th>
+                  <th>Desconto</th>
                   <th>Valor total</th>
                   <th>BC ICMS</th>
                   <th>Valor ICMS</th>
@@ -238,6 +243,8 @@
           <span data-field="emitDoc"></span>
           <span data-field="emitEndereco"></span>
         </header>
+
+        <div class="nfce-title">Documento Auxiliar da Nota Fiscal de Consumidor Eletronica</div>
 
         <section class="nfce-products">
           <div data-field="items"></div>

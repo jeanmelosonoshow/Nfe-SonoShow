@@ -127,6 +127,13 @@ function parseNfe(xmlText) {
   const volume = first(transp, "vol");
   const infAdic = first(root, "infAdic");
   const qrCode = text(first(root, "infNFeSupl"), "qrCode");
+  const cobr = first(root, "cobr");
+  const fat = first(cobr, "fat");
+  const duplicatas = all(cobr, "dup").map((dup) => ({
+    number: text(dup, "nDup"),
+    dueDate: dateOnly(text(dup, "dVenc")),
+    value: money(text(dup, "vDup")),
+  }));
 
   const items = all(root, "det").map((det) => {
     const prod = first(det, "prod");
@@ -201,6 +208,13 @@ function parseNfe(xmlText) {
     emissaoCompleta: dateTime(dhEmi),
     saidaHora: timeOnly(dhSaiEnt),
     items,
+    billing: {
+      invoice: text(fat, "nFat"),
+      original: money(text(fat, "vOrig")),
+      discount: money(text(fat, "vDesc")),
+      net: money(text(fat, "vLiq")),
+      duplicatas,
+    },
     itemCount: String(items.length),
     vBC: money(text(total, "vBC")),
     vICMS: money(text(total, "vICMS")),
@@ -258,8 +272,12 @@ function renderDanfe(data) {
   fragment.querySelectorAll("[data-field]").forEach((node) => {
     const field = node.dataset.field;
     if (field === "items") return;
+    if (field === "billing") return;
+    if (field === "billingTitle") return;
     node.textContent = data[field] || "-";
   });
+
+  renderBilling(fragment, data.billing);
 
   const body = fragment.querySelector('[data-field="items"]');
   data.items.forEach((item) => {
@@ -273,6 +291,7 @@ function renderDanfe(data) {
       <td>${escapeHtml(item.unit)}</td>
       <td class="number">${escapeHtml(item.quantity)}</td>
       <td class="number">${escapeHtml(item.unitValue)}</td>
+      <td class="number">${escapeHtml(item.discount)}</td>
       <td class="number">${escapeHtml(item.total)}</td>
       <td class="number">${escapeHtml(item.vBC)}</td>
       <td class="number">${escapeHtml(item.vICMS)}</td>
@@ -285,6 +304,39 @@ function renderDanfe(data) {
 
   danfeHost.replaceChildren(fragment);
   danfeHost.hidden = false;
+}
+
+function renderBilling(fragment, billing) {
+  const title = fragment.querySelector('[data-field="billingTitle"]');
+  const host = fragment.querySelector('[data-field="billing"]');
+  if (!host) return;
+
+  const hasInvoice = billing?.invoice || billing?.duplicatas?.length;
+  if (!hasInvoice) {
+    title.hidden = true;
+    host.hidden = true;
+    return;
+  }
+
+  if (billing.invoice) {
+    const invoice = document.createElement("div");
+    invoice.className = "billing-summary danfe-cell";
+    invoice.innerHTML = `
+      <span>Fatura</span>
+      <strong>Nº ${escapeHtml(billing.invoice)} | Valor original ${escapeHtml(billing.original)} | Desconto ${escapeHtml(billing.discount)} | Valor liquido ${escapeHtml(billing.net)}</strong>
+    `;
+    host.appendChild(invoice);
+  }
+
+  billing.duplicatas.forEach((dup) => {
+    const card = document.createElement("div");
+    card.className = "billing-dup danfe-cell";
+    card.innerHTML = `
+      <span>Duplicata</span>
+      <strong>${escapeHtml(dup.number || "-")} &nbsp; ${escapeHtml(dup.dueDate || "-")} &nbsp; ${escapeHtml(dup.value || "-")}</strong>
+    `;
+    host.appendChild(card);
+  });
 }
 
 function renderNfce(data) {

@@ -606,11 +606,335 @@ td.number {
 .products-table .col-un { width: 26px; }
 .products-table .col-qty { width: 52px; }
 .products-table .col-unit { width: 54px; }
+.products-table .col-discount { width: 45px; }
 .products-table .col-total { width: 54px; }
 .products-table .col-bc { width: 54px; }
 .products-table .col-icms { width: 54px; }
 .products-table .col-ipi { width: 45px; }
 .products-table .col-aliq { width: 34px; }
+
+/* DANFE fidelity pass based on the bundled FastReport templates. */
+.danfe-page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 7mm 7mm 7mm 6mm;
+  font-size: 8pt;
+  line-height: 1.05;
+}
+
+.danfe-page * {
+  letter-spacing: 0;
+}
+
+.receipt-stub {
+  display: grid;
+  grid-template-columns: 38mm 1fr 27mm;
+  grid-template-areas:
+    "text text nfe"
+    "date signature nfe";
+  min-height: 18mm;
+  font-size: 6.5pt;
+}
+
+.stub-text { grid-area: text; }
+.stub-date { grid-area: date; }
+.stub-signature { grid-area: signature; }
+.stub-nfe { grid-area: nfe; }
+
+.receipt-stub > div,
+.danfe-cell,
+.access-panel,
+.products-section,
+.additional-grid > div,
+th,
+td {
+  border: 0.5pt solid #000;
+}
+
+.receipt-stub p {
+  margin: 1.4mm 1.2mm;
+}
+
+.receipt-stub > div:not(:first-child) {
+  padding: 1.4mm 1.2mm;
+}
+
+.stub-nfe {
+  font-size: 10pt;
+}
+
+.cut-line {
+  margin: 1.5mm 0;
+  border-top: 0.5pt dotted #000;
+}
+
+.danfe-header {
+  grid-template-columns: 82mm 30mm 1fr;
+}
+
+.danfe-cell {
+  min-height: 7mm;
+  padding: 0.8mm 1mm;
+}
+
+.danfe-cell span,
+.access-key span,
+.section-title {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 5.3pt;
+}
+
+.danfe-cell strong {
+  min-height: 4mm;
+  margin-top: 1mm;
+  font-size: 8.3pt;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.issuer {
+  min-height: 32mm;
+}
+
+.issuer strong {
+  font-size: 12pt;
+}
+
+.issuer span {
+  font-size: 8pt;
+}
+
+.danfe-title {
+  gap: 1mm;
+  min-height: 32mm;
+}
+
+.danfe-title > strong {
+  font-size: 16pt;
+}
+
+.danfe-title > span {
+  font-size: 8pt;
+}
+
+.danfe-title small {
+  font-size: 9pt;
+}
+
+.operation-type {
+  grid-template-columns: 1fr 8mm;
+  font-size: 7.5pt;
+  text-align: left;
+}
+
+.operation-type span {
+  grid-column: 1;
+  line-height: 1.1;
+}
+
+.operation-type b {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  min-height: 6mm;
+  place-items: center;
+  padding: 0;
+  border: 0.5pt solid #000;
+  font-size: 10pt;
+}
+
+.access-panel {
+  grid-template-rows: 13mm 8mm 11mm;
+}
+
+.barcode {
+  width: 73mm;
+  height: 10mm;
+  margin: 1.5mm auto 0;
+}
+
+.access-key {
+  padding: 0.8mm 1mm;
+  border-top: 0.5pt solid #000;
+  border-bottom: 0.5pt solid #000;
+}
+
+.access-key strong {
+  margin-top: 1mm;
+  font-size: 8.5pt;
+}
+
+.auth-text {
+  padding: 1mm 2mm;
+  font-size: 7pt;
+}
+
+.two-cols {
+  grid-template-columns: 112mm 1fr;
+}
+
+.three-cols {
+  grid-template-columns: 67mm 67mm 1fr;
+}
+
+.section-title {
+  margin: 1.2mm 0 0;
+  font-weight: 700;
+}
+
+.destinatario-grid {
+  grid-template-columns: 124mm 43mm 30mm;
+}
+
+.tax-grid {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.tax-grid .danfe-cell {
+  min-height: 8.8mm;
+}
+
+.billing-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.billing-summary {
+  grid-column: 1 / -1;
+}
+
+.billing-dup strong,
+.billing-summary strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transport-grid {
+  grid-template-columns: 70mm 30mm 31mm 13mm 1fr;
+}
+
+.products-section {
+  border: 0;
+}
+
+.table-wrap {
+  overflow: visible;
+}
+
+table {
+  font-size: 6pt;
+}
+
+th {
+  height: 6mm;
+  padding: 0.6mm;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 5.3pt;
+  text-align: center;
+  vertical-align: middle;
+}
+
+td {
+  min-height: 3mm;
+  padding: 0.55mm 0.8mm;
+}
+
+.products-table .col-code { width: 16mm; }
+.products-table .col-desc { width: 59mm; }
+.products-table .col-ncm { width: 10mm; }
+.products-table .col-cst { width: 7mm; }
+.products-table .col-cfop { width: 6.5mm; }
+.products-table .col-un { width: 6mm; }
+.products-table .col-qty { width: 11.5mm; }
+.products-table .col-unit { width: 14mm; }
+.products-table .col-discount { width: 12mm; }
+.products-table .col-total { width: 11mm; }
+.products-table .col-bc { width: 11mm; }
+.products-table .col-icms { width: 11mm; }
+.products-table .col-ipi { width: 11mm; }
+.products-table .col-aliq { width: 5.5mm; }
+
+.additional-grid {
+  grid-template-columns: 2fr 1fr;
+}
+
+.additional-grid p {
+  min-height: 29mm;
+  font-size: 7pt;
+}
+
+.nfce-page {
+  width: 68mm;
+  min-height: 297mm;
+  padding: 0.5mm 0 0;
+  font-size: 6.8pt;
+  line-height: 1.15;
+  box-shadow: none;
+}
+
+.nfce-consulta {
+  display: none;
+}
+
+.nfce-issuer {
+  min-height: 22mm;
+  margin-bottom: 2mm;
+  padding-left: 16mm;
+  font-size: 6.8pt;
+}
+
+.nfce-issuer strong {
+  display: block;
+  font-size: 6.8pt;
+}
+
+.nfce-title {
+  margin-bottom: 2mm;
+  font-size: 6pt;
+  font-weight: 700;
+  text-align: center;
+}
+
+.nfce-product {
+  display: grid;
+  grid-template-columns: 15mm 1fr;
+  gap: 0 1mm;
+  margin-bottom: 1.4mm;
+  padding-bottom: 1mm;
+  border-bottom: 0.3pt solid #000;
+}
+
+.nfce-product strong {
+  grid-column: 2;
+}
+
+.nfce-product span {
+  grid-column: 1 / -1;
+  text-align: right;
+}
+
+.nfce-totals > div,
+.nfce-payment [data-field="payments"] > div {
+  grid-template-columns: 1fr 34mm;
+}
+
+.nfce-payment h2,
+.nfce-general h2,
+.nfce-access h2,
+.nfce-consumer h2,
+.nfce-extra h2 {
+  font-size: 7pt;
+}
+
+.nfce-qr {
+  justify-content: flex-start;
+}
+
+.qr-placeholder {
+  width: 30mm;
+  height: 30mm;
+}
 
 @media (max-width: 760px) {
   .topbar,
@@ -634,18 +958,18 @@ td.number {
   }
 
   .danfe-page {
-    min-width: 794px;
+    min-width: 210mm;
   }
 
   .nfce-page {
-    min-width: 720px;
+    min-width: 68mm;
   }
 }
 
 @media print {
   @page {
     size: A4;
-    margin: 4mm;
+    margin: 0;
   }
 
   body {
@@ -670,16 +994,17 @@ td.number {
   }
 
   .danfe-page {
-    width: 202mm;
+    width: 210mm;
+    min-height: 297mm;
     margin: 0;
-    padding: 0;
+    padding: 7mm 7mm 7mm 6mm;
     box-shadow: none;
   }
 
   .nfce-page {
-    width: 100%;
+    width: 68mm;
     margin: 0 auto;
-    padding: 0;
+    padding: 0.5mm 0 0;
   }
 
   .danfe-cell,
