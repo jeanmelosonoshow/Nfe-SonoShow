@@ -32,6 +32,7 @@ form.addEventListener("submit", async (event) => {
   currentAccessKey = accessKey;
   currentXml = "";
   actions.hidden = true;
+  danfeHost.replaceChildren();
   danfeHost.hidden = true;
   showStatus("Consultando a nota fiscal...");
 
@@ -44,6 +45,7 @@ form.addEventListener("submit", async (event) => {
     showStatus("DANFE encontrada. Voce ja pode imprimir ou salvar em PDF.", "success");
   } catch (error) {
     console.error(error);
+    danfeHost.replaceChildren();
     danfeHost.hidden = true;
     actions.hidden = true;
     if (shouldShowRecoveryMessage(error)) {

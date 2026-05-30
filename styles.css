@@ -1469,9 +1469,20 @@ td {
 
   .topbar,
   .search-panel,
-  .status,
   .actions {
     display: none !important;
+  }
+
+  .status:not(.recovery):not(.connection) {
+    display: none !important;
+  }
+
+  .status.recovery,
+  .status.connection {
+    width: 180mm;
+    max-width: calc(100% - 20mm);
+    margin: 14mm auto;
+    box-shadow: none;
   }
 
   main {
