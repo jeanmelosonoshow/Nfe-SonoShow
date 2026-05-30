@@ -50,7 +50,7 @@ form.addEventListener("submit", async (event) => {
       showRecoveryStatus();
       return;
     }
-    showStatus(error.message || "Nao foi possivel consultar a NF-e.", "error");
+    showConnectionStatus();
   }
 });
 
@@ -475,6 +475,22 @@ function showRecoveryStatus() {
         <strong>Não foi possivel Recuperar sua Nota por aqui.</strong>
         <p>Por favor entre em contato com o nosso SAC através do whatsapp <a href="https://wa.me/5521975145677" target="_blank" rel="noreferrer">(21) 97514-5677</a> ou por e-mail <a href="mailto:SAC@SONOSHOW.COM.BR">SAC@SONOSHOW.COM.BR</a>.</p>
         <span>HORÁRIO DE ATENDIMENTO: SEGUNDA A SEXTA DE 09:00 AS 17:00</span>
+      </div>
+    </div>
+  `;
+  statusBox.hidden = false;
+}
+
+function showConnectionStatus() {
+  statusBox.className = "status connection";
+  statusBox.innerHTML = `
+    <div class="connection-card">
+      <div class="connection-logo">
+        <img src="${CONFIG.logoUrl}" alt="Sono Show Moveis">
+      </div>
+      <div class="connection-message">
+        <strong>Perda de Conexão.</strong>
+        <p>Por favor tente novamente.</p>
       </div>
     </div>
   `;

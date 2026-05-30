@@ -283,12 +283,28 @@ button.secondary:hover {
   box-shadow: 0 16px 44px rgba(23, 33, 59, 0.09);
 }
 
+.status.connection {
+  padding: 0;
+  border-color: rgba(36, 60, 114, 0.18);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  color: var(--ink);
+  box-shadow: 0 16px 44px rgba(23, 33, 59, 0.09);
+}
+
 .recovery-card {
   display: grid;
   grid-template-columns: 154px 1fr;
   gap: 18px;
   align-items: center;
   padding: 22px;
+}
+
+.connection-card {
+  display: grid;
+  grid-template-columns: 126px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 20px 22px;
 }
 
 .recovery-logo {
@@ -303,6 +319,18 @@ button.secondary:hover {
   box-shadow: inset 0 -4px 0 rgba(247, 201, 72, 0.34);
 }
 
+.connection-logo {
+  display: flex;
+  width: 126px;
+  min-height: 58px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgba(36, 60, 114, 0.14);
+  box-shadow: inset 0 -4px 0 rgba(247, 201, 72, 0.34);
+}
+
 .recovery-logo img {
   width: 100%;
   max-height: 64px;
@@ -310,9 +338,21 @@ button.secondary:hover {
   padding: 8px;
 }
 
+.connection-logo img {
+  width: 100%;
+  max-height: 52px;
+  object-fit: contain;
+  padding: 7px;
+}
+
 .recovery-message {
   display: grid;
   gap: 6px;
+}
+
+.connection-message {
+  display: grid;
+  gap: 4px;
 }
 
 .recovery-message strong {
@@ -320,7 +360,18 @@ button.secondary:hover {
   font-size: 18px;
 }
 
+.connection-message strong {
+  color: var(--brand-blue);
+  font-size: 18px;
+}
+
 .recovery-message p {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.connection-message p {
   margin: 0;
   color: var(--ink);
   line-height: 1.45;
@@ -1387,11 +1438,13 @@ td {
     width: 104px;
   }
 
-  .recovery-card {
+  .recovery-card,
+  .connection-card {
     grid-template-columns: 1fr;
   }
 
-  .recovery-logo {
+  .recovery-logo,
+  .connection-logo {
     width: 148px;
   }
 
